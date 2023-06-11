@@ -48,17 +48,33 @@ class AdminServices extends Component {
     });
   };
 
+  postServiceDetails = async formData => {
+    if (this.state.currentServiceId) {
+      formData.append("id", this.state.currentServiceId);
+    }
+    formData.append("isDraft", true);
+    formData.append("isLocked", true);
+    const resp = await this.props.store.api.post("/services", formData, {
+      "Content-Type": "multipart/form-data"
+    });
+
+    NotificationManager.info("Changes Saved In Data");
+    localStorage.setItem("service_id", resp.data.id);
+    this.setState({
+      currentServiceId: resp.data.id
+    });
+  };
+
   renderSelectedTabComponent() {
     switch (this.state.activeTab) {
       case "characterDetails":
         return (
           <TabPanel value={this.state.activeTab} index={"characterDetails"}>
-            {/* <CreateService
-              postServiceDetails={this.postServiceDetails}
-              currentServiceId={this.state.currentServiceId}
+            <CreateService
               store={this.props.store}
-            /> */}
-            <CreateService />
+              currentServiceId={this.state.currentServiceId}
+              postServiceDetails={this.postServiceDetails}
+            />
           </TabPanel>
         );
       default:

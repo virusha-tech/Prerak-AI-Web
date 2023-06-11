@@ -4,6 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import { Button, Tooltip } from "@mui/material";
 import Select from "react-select";
 import User from "../../../assets/User.png";
+import { Editor } from "@tinymce/tinymce-react";
 
 import {
   CharacterName,
@@ -16,6 +17,7 @@ import {
   StyledPill,
   intToString
 } from "../../../molecules/CharacterSlider/index";
+import { useEffect } from "react";
 
 const customStyles = {
   control: (base, { isFocused }) => ({
@@ -68,7 +70,7 @@ const serviceCardFields = [
     title: "Character Description",
     attr: "characterDescription",
     value: "",
-    type: "textArea", // will update
+    type: "editor", // will update
     placeholder: "Enter your service description",
     required: true
   },
@@ -134,32 +136,32 @@ const CreateService = ({ postServiceDetails, currentServiceId, store }) => {
   const [img, setImage] = useState(null);
   const [serviceError, setServiceError] = useState({});
 
-  //   useEffect(() => {
-  //     async function fetchData() {
-  //       if (currentServiceId) {
-  //         const resp = await store.api.get(`/services/${currentServiceId}`);
-  //         const {
-  //           category = "",
-  //           title = "",
-  //           desc = "",
-  //           file = "",
-  //           isExecutionAvailable = "",
-  //           isTrackingAvailable = "",
-  //           isFreelyAvailable = ""
-  //         } = resp.data;
-  //         setImage(file);
-  //         setService({
-  //           category,
-  //           title,
-  //           desc,
-  //           isExecutionAvailable: String(isExecutionAvailable),
-  //           isTrackingAvailable: String(isTrackingAvailable),
-  //           isFreelyAvailable: String(isFreelyAvailable)
-  //         });
-  //       }
-  //     }
-  //     fetchData();
-  //   }, [currentServiceId]);
+  useEffect(() => {
+    async function fetchData() {
+      if (currentServiceId) {
+        const resp = await store.api.get(`/services/${currentServiceId}`);
+        const {
+          characterDescription = "",
+          characterName = "",
+          characterOwnerName = "",
+          characterTitle = "",
+          characterWeight = "",
+          characterCategory = "[]",
+          characterProfileImage = ""
+        } = resp.data;
+        setImage(characterProfileImage);
+        setService({
+          characterDescription,
+          characterName,
+          characterOwnerName,
+          characterTitle,
+          characterWeight,
+          characterCategory: characterCategory
+        });
+      }
+    }
+    fetchData();
+  }, [currentServiceId]);
 
   const onChange = async (key, event) => {
     if (key === "file") {
@@ -170,6 +172,7 @@ const CreateService = ({ postServiceDetails, currentServiceId, store }) => {
       reader.readAsDataURL(event.value);
     }
     const value = event.value;
+
     setService(prevState => {
       return {
         ...prevState,
@@ -181,10 +184,13 @@ const CreateService = ({ postServiceDetails, currentServiceId, store }) => {
   const handleClick = async () => {
     const formData = new FormData();
     for (var key in service) {
-      formData.append(key, service[key]);
+      if (key == "characterCategory") {
+        formData.append(key, JSON.stringify(service[key]));
+      } else {
+        formData.append(key, service[key]);
+      }
     }
-    console.log(formData);
-    // postServiceDetails(formData);
+    postServiceDetails(formData);
   };
 
   const renderCorrespondingInput = ({
@@ -211,9 +217,37 @@ const CreateService = ({ postServiceDetails, currentServiceId, store }) => {
               isSearchable={true}
               styles={{ ...customStyles }}
               onChange={val => onChange(attr, { value: val })}
+              value={service[attr] || []}
             />
           </>
         );
+      case "editor":
+        return (
+          <>
+            <Editor
+              apiKey={"iw7fjsx8t03sha9ygj6dj5q0bwjstmkcpn93mzq5wy3vq7dh"}
+              value={service[attr] || ""}
+              init={{
+                height: 300,
+                placeholder: "Charcter Long description",
+                inline: false,
+                menubar: false,
+                branding: false,
+                elementpath: false,
+                resize: false,
+                statusbar: false,
+                forced_root_block: "",
+                paste_as_text: true,
+                contextmenu_never_use_native: false,
+                contextmenu: "link bold pastetext",
+                plugins: ["lists link paste contextmenu"]
+                // toolbar: "bold bullist numlist link"
+              }}
+              onEditorChange={val => onChange(attr, { value: val })}
+            />
+          </>
+        );
+
       case "textArea":
         return (
           <>
@@ -291,8 +325,6 @@ const CreateService = ({ postServiceDetails, currentServiceId, store }) => {
         );
     }
   };
-
-  console.log("service", service);
   return (
     <Wrapper>
       <div className="left">
@@ -387,16 +419,16 @@ const CreateService = ({ postServiceDetails, currentServiceId, store }) => {
           </CharacterSecondaryInformation>
         </StyledPill>
         {/* <Tool
-  key={"Title"}
-  group={service.category || "Category"}
-  title={service.title || "tool.title"}
-  to={"tool.to"}
-  Icon={img}
-  desc={service.desc || "Description"}
-  fromColor={"gray-500"}
-  toColor={"gray-500"}
-  isComingSoon={true}
-/> */}
+            key={"Title"}
+            group={service.category || "Category"}
+            title={service.title || "tool.title"}
+            to={"tool.to"}
+            Icon={img}
+            desc={service.desc || "Description"}
+            fromColor={"gray-500"}
+            toColor={"gray-500"}
+            isComingSoon={true}
+          /> */}
       </div>
     </Wrapper>
   );

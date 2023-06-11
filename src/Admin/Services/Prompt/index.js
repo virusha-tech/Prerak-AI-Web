@@ -4,6 +4,7 @@ import { Button, Tooltip } from "@mui/material";
 import Select from "react-select";
 import User from "../../../assets/User.png";
 import styled from "styled-components";
+import { useEffect } from "react";
 
 const serviceCardFields = [
   {
@@ -27,44 +28,23 @@ const serviceCardFields = [
 
 const PromptService = ({ postServiceDetails, currentServiceId, store }) => {
   const [service, setService] = useState({});
-  const [img, setImage] = useState(null);
   const [serviceError, setServiceError] = useState({});
 
-  //   useEffect(() => {
-  //     async function fetchData() {
-  //       if (currentServiceId) {
-  //         const resp = await store.api.get(`/services/${currentServiceId}`);
-  //         const {
-  //           category = "",
-  //           title = "",
-  //           desc = "",
-  //           file = "",
-  //           isExecutionAvailable = "",
-  //           isTrackingAvailable = "",
-  //           isFreelyAvailable = ""
-  //         } = resp.data;
-  //         setImage(file);
-  //         setService({
-  //           category,
-  //           title,
-  //           desc,
-  //           isExecutionAvailable: String(isExecutionAvailable),
-  //           isTrackingAvailable: String(isTrackingAvailable),
-  //           isFreelyAvailable: String(isFreelyAvailable)
-  //         });
-  //       }
-  //     }
-  //     fetchData();
-  //   }, [currentServiceId]);
+  useEffect(() => {
+    async function fetchData() {
+      if (currentServiceId) {
+        const resp = await store.api.get(`/services/${currentServiceId}`);
+        const { characterStartingSentence = "", prompt = "" } = resp.data;
+        setService({
+          characterStartingSentence,
+          prompt
+        });
+      }
+    }
+    fetchData();
+  }, [currentServiceId]);
 
   const onChange = async (key, event) => {
-    if (key === "file") {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImage(reader.result);
-      };
-      reader.readAsDataURL(event.value);
-    }
     const value = event.value;
     setService(prevState => {
       return {
@@ -79,8 +59,7 @@ const PromptService = ({ postServiceDetails, currentServiceId, store }) => {
     for (var key in service) {
       formData.append(key, service[key]);
     }
-    console.log(formData);
-    // postServiceDetails(formData);
+    postServiceDetails(formData);
   };
 
   const renderCorrespondingInput = ({

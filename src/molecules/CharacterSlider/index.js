@@ -44,7 +44,6 @@ function ChipSlider({ characters, selectedChipIndex }) {
     filterWrapperRef.current.scrollLeft = 0;
   }, [selectedChipIndex]);
   const getFirstVisibleElement = (direction = "left") => {
-    debugger;
     var viewportWidth = filterWrapperRef.current.clientWidth; // Width of the viewport
     var elements = filterWrapperRef.current.getElementsByClassName(
       "filters-slider__filter"
