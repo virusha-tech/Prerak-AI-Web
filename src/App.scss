@@ -1,0 +1,14 @@
+.rsc-content {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+.rsc-container {
+  border-radius: 0px !important;
+}
+
+.rsc-input {
+  &::placeholder {
+    color: white;
+  }
+}
