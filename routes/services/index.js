@@ -71,7 +71,6 @@ app.get("/charaterCategoryMap", checkCache, async (req, res) => {
     }
   ]).exec((err, results) => {
     if (err) {
-      // handle error
       console.log(err);
     } else {
       // console.log(results);
@@ -127,7 +126,7 @@ app.get("/:id", async (req, res) => {
 app.post("/:id", async (req, res) => {
   try {
     const serviceId = req.params.id;
-
+    const result = await redisClient.del("charaterCategoryMap");
     Character.findByIdAndDelete(serviceId, (err, doc) => {
       res.json({ status: true });
     });
@@ -139,6 +138,7 @@ app.post("/:id", async (req, res) => {
 app.post("/", upload.single("file"), async (req, res) => {
   try {
     let data = { ...req.body };
+    const result = await redisClient.del("charaterCategoryMap");
     if (req?.file?.location) {
       data = {
         ...data,
