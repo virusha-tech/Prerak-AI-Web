@@ -24,18 +24,22 @@ redisClient.on("connect", () => {
 // Middleware function to check cache
 const checkCache = async (req, res, next) => {
   // Retrieve data from Redis cache
-  const result = await redisClient.get("charaterCategoryMap");
-  if (result !== null) {
-    // Data exitts in cache, send the cached response
-    console.log("cached results");
-    // res.send();
-    res.json({
-      finalResponse: JSON.parse(result)
-    });
-  } else {
-    // Data doesn't exist in cache, move to the next middleware
-    console.log("UnCached results");
-    next();
+  try {
+    const result = await redisClient.get("charaterCategoryMap");
+    if (result !== null) {
+      // Data exitts in cache, send the cached response
+      console.log("cached results");
+      // res.send();
+      res.json({
+        finalResponse: JSON.parse(result)
+      });
+    } else {
+      // Data doesn't exist in cache, move to the next middleware
+      console.log("UnCached results");
+      next();
+    }
+  } catch (e) {
+    res.send("Something went wrong");
   }
 };
 
@@ -50,48 +54,52 @@ const upload = multer({
 });
 
 app.get("/charaterCategoryMap", checkCache, async (req, res) => {
-  Character.aggregate([
-    {
-      $unwind: "$characterCategory" // Breaks down the array into individual documents
-    },
-    {
-      $match: {
-        isDraft: false // Add your key and value condition here
-      }
-    },
-    {
-      $group: {
-        _id: "$characterCategory", // Group by the array field values (the key)
-        objects: {
-          $push: "$$ROOT" // Store all the key-value pairs of the objects
+  try {
+    Character.aggregate([
+      {
+        $unwind: "$characterCategory" // Breaks down the array into individual documents
+      },
+      {
+        $match: {
+          isDraft: false // Add your key and value condition here
+        }
+      },
+      {
+        $group: {
+          _id: "$characterCategory", // Group by the array field values (the key)
+          objects: {
+            $push: "$$ROOT" // Store all the key-value pairs of the objects
+          }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          key: "$_id", // Rename the _id field to key
+          objects: 1 // Include the objects field
         }
       }
-    },
-    {
-      $project: {
-        _id: 0,
-        key: "$_id", // Rename the _id field to key
-        objects: 1 // Include the objects field
+    ]).exec((err, results) => {
+      if (err) {
+        console.log(err);
+      } else {
+        // console.log(results);
+        const finalResponse = {};
+        results.map(result => {
+          finalResponse[result["key"].value] = result["objects"];
+        });
+        console.log(finalResponse);
+        // Store the response in Redis cache with an expiration time of 24 hours (86400 seconds)
+        redisClient.set("charaterCategoryMap", JSON.stringify(finalResponse));
+        console.log("Mongoose data....");
+        res.json({
+          finalResponse
+        });
       }
-    }
-  ]).exec((err, results) => {
-    if (err) {
-      console.log(err);
-    } else {
-      // console.log(results);
-      const finalResponse = {};
-      results.map(result => {
-        finalResponse[result["key"].value] = result["objects"];
-      });
-      console.log(finalResponse);
-      // Store the response in Redis cache with an expiration time of 24 hours (86400 seconds)
-      redisClient.set("charaterCategoryMap", JSON.stringify(finalResponse));
-      console.log("Mongoose data....");
-      res.json({
-        finalResponse
-      });
-    }
-  });
+    });
+  } catch (e) {
+    res.send("Something went wrong");
+  }
 });
 
 // Endpoint to invalidate the cache
