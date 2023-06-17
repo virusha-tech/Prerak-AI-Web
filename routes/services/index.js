@@ -21,6 +21,11 @@ redisClient.connect();
 redisClient.on("connect", () => {
   console.log("Connected to Redis");
 });
+
+redisClient.on("error", function(error) {
+  console.error(error);
+});
+
 // Middleware function to check cache
 const checkCache = async (req, res, next) => {
   // Retrieve data from Redis cache
@@ -83,7 +88,7 @@ app.get("/charaterCategoryMap", checkCache, async (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        // console.log(results);
+        console.log("results");
         const finalResponse = {};
         results.map(result => {
           finalResponse[result["key"].value] = result["objects"];
