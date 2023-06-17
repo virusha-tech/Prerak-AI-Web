@@ -16,14 +16,11 @@ RUN npm install
 # Install the dependencies for the app
 RUN npm install
 
-RUN npm run build
-
 # Copy the rest of the app's code to the container
 COPY . .
 
-## Avoiding the build for now until we figure out something ##
 # Build the app
-# RUN npm run build
+RUN npm run build
 
 # Set the default command for the container to run the app
 # CMD ["serve", "-s", "build"]
