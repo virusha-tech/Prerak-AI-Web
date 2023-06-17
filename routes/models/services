@@ -1,0 +1,59 @@
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
+const ServiceSchema = new Schema({
+  title: {
+    type: String,
+  },
+  desc: {
+    type: String,
+  },
+  category: {
+    type: String,
+  },
+  file: {
+    type: String,
+  },
+  to: {
+    type: String,
+  },
+  api: {
+    type: String,
+  },
+  additionalSystemTextForChatBot: {
+    type: String,
+  },
+  isTrackingAvailable: {
+    type: Boolean,
+  },
+  isFreelyAvailable: {
+    type: Boolean,
+  },
+  isExecutionAvailable: {
+    type: Boolean,
+  },
+  inputs: {
+    type: String,
+  },
+  additionalContextForChatBot: {
+    type: String,
+  },
+  prompt: {
+    type: String,
+  },
+  isDraft: {
+    type: Boolean,
+    default: true,
+  },
+  isLocked: {
+    type: Boolean,
+    default: false,
+  },
+},{ timestamps: true });
+
+ServiceSchema.virtual('created_at_formatted').get(function() {
+  return this.created_at.toLocaleString(); // add a virtual property to format the created_at field
+});
+
+const Service = mongoose.model("service", ServiceSchema);
+module.exports = Service;
