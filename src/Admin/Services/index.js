@@ -37,6 +37,9 @@ class AdminServices extends Component {
   async componentDidMount() {
     const service_id =
       this.props.match.params.id || localStorage.getItem("service_id");
+    console.log("hey....", service_id);
+    console.log("service_id", service_id);
+
     if (service_id) {
       this.setState({ currentServiceId: service_id });
     }

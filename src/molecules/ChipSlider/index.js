@@ -137,12 +137,12 @@ function ChipSlider({ categories, selectedChipIndex, handleCategoryUpdate }) {
         {categories.map((category, index) => {
           return (
             <StyledPill
-              key={category.slug}
+              key={category.title}
               selected={index === selectedChipIndex}
               className="filters-slider__filter"
               onClick={() => handleCategoryUpdate(category, index)}
             >
-              {category.name}
+              {category.title}
             </StyledPill>
           );
         })}
@@ -229,6 +229,7 @@ const LeftArrow = styled.div`
   background-color: ${({ theme }) => {
     return theme.primary;
   }};
+  display: none;
   .filters-slider__nav {
     border: 1px solid #e9e9e9;
     display: flex;
@@ -272,6 +273,8 @@ const RightArrow = styled.div`
   background-color: ${({ theme }) => {
     return theme.primary;
   }};
+  display: none;
+
   .filters-slider__nav {
     border: 1px solid #e9e9e9;
     display: flex;

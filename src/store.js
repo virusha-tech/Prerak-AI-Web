@@ -4,12 +4,13 @@ import { configure, flow } from "mobx";
 // import FuzzySet from "fuzzyset";
 import Filter from "bad-words";
 
-import CATEGORIES from "./CATEGORIES.js";
-import CuratedCategoryCharacters from "./CuratedCategory.js";
-
 // import FREE_TOOLS from "./tools/previewTools";
 
 import config from "./config";
+import {
+  categories,
+  mapArraytoReactSelectorOptions
+} from "./Admin/Services/Create/index";
 
 let filterBadWords = new Filter();
 
@@ -27,7 +28,7 @@ class appStore {
   @observable redirect = ``;
   @observable editor;
   @observable tools = [];
-  @observable isToolsLoading = true;
+  @observable isCuratedCategoryLoading = true;
   @observable freeTools = [];
 
   // User Profile
@@ -39,12 +40,12 @@ class appStore {
 
   // CHATS!
   @observable chatLogs = [];
-  @observable categories = CATEGORIES;
-  @observable curatedCategoryCharacter = CuratedCategoryCharacters;
-
+  @observable categories = mapArraytoReactSelectorOptions(categories);
+  @observable curatedCategoryCharacter = {};
   constructor() {
+    // console.log("categories", mapArraytoReactSelectorOptions(categories));
     makeObservable(this);
-    // this.init();
+    this.init();
     // Check credits every time, and log out people who aren't authenticated
     // this.api.interceptors.response.use(
     //   response => {
@@ -80,29 +81,28 @@ class appStore {
   //   window.location.pathname = "/my-profile";
   // };
 
-  // init = async () => {
-  //   try {
-  //     this.referralTrackingCode();
-  //     const profile = localStorage.getItem("profile");
-  //     const token = localStorage.getItem("token");
-  //     if (profile && token) {
-  //       if (window.self !== window.top) {
-  //         window.top.location.href = "https://beta.plannr.ai/";
-  //       }
-  //       this.api.defaults.headers.common["x-access-token"] = token;
-  //       this.profile = JSON.parse(profile);
-  //       this.findTools();
-  //       this.isLoggedIn = true;
-  //       console.log("in init");
-  //       this.refreshTokenAndProfile();
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  init = async () => {
+    //   try {
+    //     this.referralTrackingCode();
+    //     const profile = localStorage.getItem("profile");
+    //     const token = localStorage.getItem("token");
+    //     if (profile && token) {
+    //       if (window.self !== window.top) {
+    //         window.top.location.href = "https://beta.plannr.ai/";
+    //       }
+    //       this.api.defaults.headers.common["x-access-token"] = token;
+    //       this.profile = JSON.parse(profile);
+    //       this.findTools();
+    //       this.isLoggedIn = true;
+    console.log("in init");
+    this.getCuratedCategory();
+    //     }
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+  };
 
   // @observable referral = "";
-
   // referralTrackingCode = async () => {
   //   let referral = new URLSearchParams(window.location.search).get("referral");
   //   if (referral) {
@@ -117,15 +117,12 @@ class appStore {
   //   this.tools = response.data.docs;
   // };
 
-  // findTools = async () => {
-  //   const response = await this.api.get(
-  //     `/services/all?accountType=${this.profile.accountType}`
-  //   );
-  //   this.tools = response.data.docs.filter(doc => !doc.isFreelyAvailable);
-  //   this.freeTools = response.data.docs.filter(doc => doc.isFreelyAvailable);
-  //   this.isToolsLoading = false;
-  //   return "done";
-  // };
+  getCuratedCategory = async () => {
+    const response = await this.api.get(`/services/charaterCategoryMap`);
+    this.isCuratedCategoryLoading = false;
+    this.curatedCategoryCharacter = response.data.finalResponse;
+    return "done";
+  };
 
   // setReferral = async referral => {
   //   this.referral = referral;

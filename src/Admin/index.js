@@ -2,16 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import { AdminMenuList } from "../config";
 import Services from "./Services/index";
-import { Route } from "react-router-dom";
+import AdminServiceDB from "./Services/Table/index";
+import { Link, Route } from "react-router-dom";
 
 function Admin() {
   return (
     <AdminWrapper>
       <SidebarWrapper>
         <Sidebar>
-          {AdminMenuList.map(({ label }) => {
+          {AdminMenuList.map(({ label, to }) => {
             return (
-              <MenuItem key={label}>
+              <MenuItem key={label} to={to}>
                 <MenuItemImg
                   src={require(`../assets/${label}.svg`).default}
                   alt={`${label} Logo`}
@@ -24,10 +25,20 @@ function Admin() {
         </Sidebar>
       </SidebarWrapper>
       <MainContent>
-        {/* path={`${match.path}/:topicId`} */}
+        <Route
+          path="/admin/c2f269ef-f0f2-475b-a658-7f166e0b6749/create/:id"
+          exact
+          component={Services}
+        />
+        <Route
+          path={`/admin/c2f269ef-f0f2-475b-a658-7f166e0b6749/services/create`}
+          exact
+          component={Services}
+        />
         <Route
           path={`/admin/c2f269ef-f0f2-475b-a658-7f166e0b6749/services`}
-          component={Services}
+          exact
+          component={AdminServiceDB}
         />
       </MainContent>
     </AdminWrapper>
@@ -56,7 +67,7 @@ const Sidebar = styled.div`
   height: 100%;
 `;
 
-const MenuItem = styled.div`
+const MenuItem = styled(Link)`
   flex: 0.1;
   background-color: ${({ theme }) => {
     return theme.primary;

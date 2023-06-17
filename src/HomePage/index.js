@@ -5,6 +5,7 @@ import ChipSlider from "../molecules/ChipSlider/index";
 import { observer, inject } from "mobx-react";
 import { withRouter } from "react-router-dom";
 import CuractedCharacterSlider from "../molecules/CharacterSlider/index";
+import GeneratingSpinner from "../atoms/GeneratingSpinner";
 
 @inject("store")
 @observer
@@ -13,25 +14,25 @@ class HomePage extends Component {
     super(props);
     this.state = {
       selectedChipIndex: 0,
-      selectedChipLabel: "Helpers"
+      selectedChipLabel: this.props.store.categories[0].value
     };
     this.handleCategoryUpdate = this.handleCategoryUpdate.bind(this);
   }
 
   handleCategoryUpdate(category, index) {
-    this.props.history.push(`/${category.slug}`);
+    this.props.history.push(`/${category.value}`);
     this.setState({
       selectedChipIndex: index,
-      selectedChipLabel: category.name
+      selectedChipLabel: category.value
     });
   }
 
   componentDidMount() {
     this.props.store.categories.map((category, index) => {
-      if (this.props.match.params.id === category.slug) {
+      if (this.props.match.params.id === category.value) {
         this.setState({
           selectedChipIndex: index,
-          selectedChipLabel: category.name
+          selectedChipLabel: category.value
         });
       }
     });
@@ -39,18 +40,18 @@ class HomePage extends Component {
     this.unlisten = this.props.history.listen((location, action) => {
       let isMatchFound = false;
       this.props.store.categories?.map((category, index) => {
-        if (location.pathname.replace("/", "") === category.slug) {
+        if (location.pathname.replace("/", "") === category.value) {
           isMatchFound = true;
           this.setState({
             selectedChipIndex: index,
-            selectedChipLabel: category.name
+            selectedChipLabel: category.value
           });
         }
       });
       if (!isMatchFound) {
         this.setState({
           selectedChipIndex: 0,
-          selectedChipLabel: "Helpers"
+          selectedChipLabel: this.props.store.categories[0].value
         });
       }
     });
@@ -85,16 +86,19 @@ class HomePage extends Component {
             selectedChipIndex={this.state.selectedChipIndex}
             handleCategoryUpdate={this.handleCategoryUpdate}
           />
-          <CuractedCharacterSlider
-            characters={
-              this.props.store.curatedCategoryCharacter[
-                this.state.selectedChipLabel
-              ]
-            }
-            selectedChipIndex={this.state.selectedChipIndex}
-            // selectedChipIndex={this.state.selectedChipIndex}
-            handleClick={this.handleCharacterClick}
-          />
+          {Object.keys(this.props.store.curatedCategoryCharacter).length ? (
+            <CuractedCharacterSlider
+              characters={
+                this.props.store.curatedCategoryCharacter[
+                  this.state.selectedChipLabel
+                ]
+              }
+              selectedChipIndex={this.state.selectedChipIndex}
+              handleClick={this.handleCharacterClick}
+            />
+          ) : (
+            <GeneratingSpinner>Loading Characters...</GeneratingSpinner>
+          )}
         </MainContent>
       </HomePageWrapper>
     );

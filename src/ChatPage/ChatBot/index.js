@@ -85,6 +85,7 @@ class Bot extends React.Component {
   }
 
   render() {
+    console.log("props", this.props.characterProfileImage);
     return (
       <ContextChatBotWrapper>
         <ChatBot
@@ -101,7 +102,10 @@ class Bot extends React.Component {
             fill: "#FFFFFF",
             height: "96%"
           }}
-          botAvatar="https://characterai.io/i/400/static/avatars/uploaded/2023/3/22/wauTE4MCQMS1eH0hbhnsZC0QccC6yo05MQmlnvF_Syg.webp"
+          botAvatar={
+            this.props.characterProfileImage ||
+            "https://characterai.io/i/400/static/avatars/uploaded/2023/3/22/wauTE4MCQMS1eH0hbhnsZC0QccC6yo05MQmlnvF_Syg.webp"
+          }
           width="100%"
           userAvatar={User}
           headerTitle={"Plannr AI Bot"}

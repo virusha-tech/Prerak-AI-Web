@@ -144,34 +144,30 @@ function ChipSlider({ characters, selectedChipIndex }) {
     }
   };
 
-  const handleCategoryClick = ({ external_id }) => {
-    history.push(`/chat/${external_id}`);
+  const handleCategoryClick = ({ _id }) => {
+    history.push(`/chat/${_id}`);
   };
-
   return (
     <FilterSlider>
       <FilterSliderWrapper ref={filterWrapperRef}>
-        {characters.map((character, index) => {
+        {characters?.map((character, index) => {
           return (
             <StyledPill
-              key={character.external_id}
-              //   selected={index === selectedChipIndex}
+              key={character._id}
               className="filters-slider__filter"
               onClick={() => handleCategoryClick(character, index)}
             >
               <CharacterPrimaryInformatoin>
-                <StyledImage
-                  src={`https://characterai.io/i/400/static/avatars/${character.avatar_file_name}`}
-                />
-                <CharacterName>{character.participant__name}</CharacterName>
-                <CharacterTitle>{character.title}</CharacterTitle>
+                <StyledImage src={`${character.characterProfileImage}`} />
+                <CharacterName>{character.characterName}</CharacterName>
+                <CharacterTitle>{character.characterTitle}</CharacterTitle>
               </CharacterPrimaryInformatoin>
               <CharacterSecondaryInformation>
                 <CharacterOwner>
-                  {"@ " + character.user__username}
+                  {"@ " + character.characterOwnerName}
                 </CharacterOwner>
                 <CharacterViewCount>
-                  {intToString(character.participant__num_interactions)}
+                  {intToString(character.characterViewsCount)}
                 </CharacterViewCount>
               </CharacterSecondaryInformation>
             </StyledPill>
@@ -240,7 +236,7 @@ const FilterSliderWrapper = styled.div`
   overflow-x: auto;
   gap: 0.5rem;
   align-items: stretch;
-
+  flex: 1;
   transition: transform 0.3s ease-in-out;
 
   &::-webkit-scrollbar {
@@ -260,6 +256,8 @@ const LeftArrow = styled.div`
   color: #fffefe;
   height: 100%;
   background-color: transparent;
+  display: none;
+
   .filters-slider__nav {
     border: 1px solid #e9e9e9;
     display: flex;
@@ -304,6 +302,7 @@ const RightArrow = styled.div`
   color: #fffefe;
   height: 100%;
   background-color: transparent;
+  display: none;
 
   .filters-slider__nav {
     border: 1px solid #e9e9e9;

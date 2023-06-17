@@ -14,10 +14,10 @@ import {
   CharacterTitle,
   CharacterViewCount,
   StyledImage,
-  StyledPill,
-  intToString
+  StyledPill
 } from "../../../molecules/CharacterSlider/index";
 import { useEffect } from "react";
+import slug from "slug";
 
 const customStyles = {
   control: (base, { isFocused }) => ({
@@ -104,7 +104,7 @@ const serviceCardFields = [
   }
 ];
 
-const categories = [
+export const categories = [
   "Bollywood Actors",
   "Bollywood Actresses",
   "Musicians",
@@ -121,11 +121,11 @@ const categories = [
   "Reel Characters"
 ];
 
-const mapArraytoReactSelectorOptions = array => {
+export const mapArraytoReactSelectorOptions = array => {
   return array.map(arr => {
     return {
       title: arr,
-      value: arr,
+      value: slug(arr),
       label: arr
     };
   });
@@ -161,6 +161,7 @@ const CreateService = ({ postServiceDetails, currentServiceId, store }) => {
       }
     }
     fetchData();
+    console.log("gaurav", currentServiceId);
   }, [currentServiceId]);
 
   const onChange = async (key, event) => {
@@ -390,9 +391,9 @@ const CreateService = ({ postServiceDetails, currentServiceId, store }) => {
           })}
         </div>
         <div className="action_btns">
-          <Button variant="contained" onClick={() => handleClick()}>
+          <StyledButton variant="contained" onClick={() => handleClick()}>
             Save Draft
-          </Button>
+          </StyledButton>
         </div>
       </div>
       <div className="right">
@@ -523,6 +524,11 @@ const Label = styled.label`
   display: flex;
   align-items: center;
   color: white;
+`;
+
+const StyledButton = styled(Button)`
+  border: 1px solid white !important;
+  outline: 1px solid white;
 `;
 
 export default CreateService;

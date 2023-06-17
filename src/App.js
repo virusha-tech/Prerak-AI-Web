@@ -53,7 +53,7 @@ const theme = {
 const materialtheme = createTheme({
   palette: {
     primary: {
-      main: "#FFFFFF" // #cb1313
+      main: "#06152B" // #cb1313
     }
   },
   typography: {

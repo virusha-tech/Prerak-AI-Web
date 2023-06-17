@@ -50,28 +50,28 @@ export const MenuList = [
     label: "Home",
     to: "/",
     exact: true
-  },
-  {
-    label: "Feed",
-    isButton: true
-  },
-  {
-    label: "Create",
-    to: "/saved-plans",
-    exact: true
-  },
-  {
-    label: "Chat",
-    // to: "/help",
-    isButton: true,
-    exact: true
-  },
-  {
-    label: "Community",
-    // to: "/whats-new",
-    isButton: true,
-    exact: true
   }
+  // {
+  //   label: "Feed",
+  //   isButton: true
+  // },
+  // {
+  //   label: "Create",
+  //   to: "/saved-plans",
+  //   exact: true
+  // },
+  // {
+  //   label: "Chat",
+  //   // to: "/help",
+  //   isButton: true,
+  //   exact: true
+  // },
+  // {
+  //   label: "Community",
+  //   // to: "/whats-new",
+  //   isButton: true,
+  //   exact: true
+  // }
   //   ,
   //   {
   //     label: "What's new",
@@ -90,12 +90,11 @@ export const MenuList = [
 export const AdminMenuList = [
   {
     label: "Dashboard",
-    to: "/",
-    exact: true
+    to: "#"
   },
   {
     label: "Services",
-    isButton: true
+    to: "/admin/c2f269ef-f0f2-475b-a658-7f166e0b6749/services"
   }
 ];
 
