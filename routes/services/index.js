@@ -8,13 +8,13 @@ const { ObjectId } = mongoose.Types;
 const Character = db.character;
 const redis = require("redis");
 let app = express.Router();
+console.log(process.env.REDIS_PORT);
+console.log(process.env.REDIS_HOST);
 
 // Create a Redis client
 const redisClient = redis.createClient({
-  host: "localhost",
-  port: 6379,
-  maxClients: 10 // Adjust as per your requirements
-  // Other Redis configuration options if needed
+  port: process.env.REDIS_PORT,
+  host: process.env.REDIS_HOST
 });
 
 redisClient.connect();
@@ -83,7 +83,7 @@ app.get("/charaterCategoryMap", checkCache, async (req, res) => {
       results.map(result => {
         finalResponse[result["key"].value] = result["objects"];
       });
-
+      console.log(finalResponse);
       // Store the response in Redis cache with an expiration time of 24 hours (86400 seconds)
       redisClient.set("charaterCategoryMap", JSON.stringify(finalResponse));
       console.log("Mongoose data....");
