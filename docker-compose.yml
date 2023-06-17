@@ -2,6 +2,7 @@ version: "3.9"
 services:
   application:
     container_name: application
+    restart: on-failure
     build: .
     ports:
       - 3080:3080
