@@ -55,6 +55,11 @@ app.get("/charaterCategoryMap", checkCache, async (req, res) => {
       $unwind: "$characterCategory" // Breaks down the array into individual documents
     },
     {
+      $match: {
+        isDraft: false // Add your key and value condition here
+      }
+    },
+    {
       $group: {
         _id: "$characterCategory", // Group by the array field values (the key)
         objects: {
