@@ -81,7 +81,7 @@ class App extends Component {
                   <Route path="/admin/c2f269ef-f0f2-475b-a658-7f166e0b6749">
                     <Admin />
                   </Route>
-                  <Route path="/chat/:id" exact>
+                  <Route path="/chat/:heroname/:id" exact>
                     <ChatPage />
                   </Route>
                   <Route path="/:id" exact>

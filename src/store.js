@@ -112,10 +112,9 @@ class appStore {
   //   }
   // };
 
-  // refreshTools = async () => {
-  //   const response = await this.api.get(`/services/all`);
-  //   this.tools = response.data.docs;
-  // };
+  refreshCharacters = async () => {
+    this.getCuratedCategory();
+  };
 
   getCuratedCategory = async () => {
     const response = await this.api.get(`/services/charaterCategoryMap`);

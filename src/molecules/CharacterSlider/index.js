@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
+import slug from "slug";
 
 export const intToString = n => {
   if (n < 1e3) return n;
@@ -144,8 +145,8 @@ function ChipSlider({ characters, selectedChipIndex }) {
     }
   };
 
-  const handleCategoryClick = ({ _id }) => {
-    history.push(`/chat/${_id}`);
+  const handleCategoryClick = ({ _id, characterName }) => {
+    history.push(`/chat/${slug(characterName)}/${_id}`);
   };
   return (
     <FilterSlider>

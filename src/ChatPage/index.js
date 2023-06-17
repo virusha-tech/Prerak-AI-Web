@@ -28,12 +28,7 @@ class ChatPage extends Component {
     const { data } = await this.props.store.api.get(
       `/services/${this.props.match.params.id}`
     );
-    const {
-      characterProfileImage,
-      characterName,
-      characterStartingSentence,
-      prompt
-    } = data;
+    const { characterProfileImage, characterStartingSentence, prompt } = data;
 
     if (characterProfileImage && characterStartingSentence && initialSentence) {
       this.setState({

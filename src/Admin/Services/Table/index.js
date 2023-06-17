@@ -149,7 +149,7 @@ class AdminServiceDB extends Component {
       "Content-Type": "multipart/form-data"
     });
     NotificationManager.info("Changes Saved");
-    await this.props.store.refreshTools();
+    await this.props.store.refreshCharacters();
   }
 
   async handleLockClick(index, msg) {
