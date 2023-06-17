@@ -13,6 +13,11 @@ COPY package*.json ./
 # Install the dependencies for the app
 RUN npm install
 
+# Install the dependencies for the app
+RUN npm install
+
+RUN npm run build
+
 # Copy the rest of the app's code to the container
 COPY . .
 
