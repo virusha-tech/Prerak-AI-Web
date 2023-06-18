@@ -116,6 +116,10 @@ const HomePageWrapper = styled.div`
 
 const SidebarWrapper = styled.div`
   width: 86px;
+  @media only screen and (max-width: 576px) {
+    width: 0px;
+    display: none;
+  }
 `;
 const Sidebar = styled.div`
   flex: 0.1;

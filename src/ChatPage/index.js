@@ -97,7 +97,7 @@ class ChatPage extends Component {
         {!this.state.isLoading ? (
           <>
             <EmptyContainer />
-            <BotWrapper>
+            <BotWrapper className="botWrapper">
               <DisclaimerWrapper>
                 <MoveBack>
                   <img src={Back} onClick={this.goBack} />
@@ -105,12 +105,14 @@ class ChatPage extends Component {
                 <Disclaimer>
                   <h1>{this.state?.characterName}</h1>
                   <p>Created by @{this.state?.characterOwnerName}</p>
-                  <span>Remember: Everything Characters say is made up!</span>
                 </Disclaimer>
                 <Share>
                   <img src={ShareLogo} onClick={this.copyTOClipBoard} />
                 </Share>
               </DisclaimerWrapper>
+              <div className="alert">
+                Remember: Everything Characters say is made up!
+              </div>
               <Bot
                 initialContext={this.state?.initialSentence}
                 startingSentence={this.state?.characterStartingSentence}
@@ -144,19 +146,6 @@ const DisclaimerWrapper = styled.h1`
   }
   p {
     margin-bottom: 20px;
-  }
-  span {
-    border: 1px solid #484848;
-    border-radius: 20px;
-    font-family: "Poppins";
-    font-style: normal;
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 18px;
-    text-align: center;
-    font-feature-settings: "case" on;
-    color: #ffffff;
-    padding: 5px 40px;
   }
 `;
 
@@ -192,6 +181,9 @@ const Share = styled.div`
   flex: 0.2;
   color: white;
   cursor: pointer;
+  img {
+    margin-left: auto;
+  }
 `;
 
 const ChatPageWrapper = styled.div`
@@ -212,6 +204,25 @@ const BotWrapper = styled.div`
   flex: 0.4;
   @media only screen and (max-width: 576px) {
     flex: 1;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+  }
+  .alert {
+    border: 1px solid #484848;
+    border-radius: 20px;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    font-feature-settings: "case" on;
+    color: #ffffff;
+    padding: 5px 40px;
+    margin: 0 auto;
+    /* width: 388px; */
   }
 `;
 

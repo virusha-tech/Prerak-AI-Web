@@ -87,7 +87,7 @@ class Bot extends React.Component {
   render() {
     console.log("props", this.props.characterProfileImage);
     return (
-      <ContextChatBotWrapper>
+      <ContextChatBotWrapper className="chatbotwrapper">
         <ChatBot
           //   recognitionEnable={true}
           style={{ height: "100%" }}
