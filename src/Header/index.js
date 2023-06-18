@@ -55,9 +55,7 @@ class Header extends Component {
             </SearchIcon>
           </HeaderSearch>
         ) : null}
-        <HeaderRight>
-          <h1>Search</h1>
-        </HeaderRight>
+        <HeaderRight></HeaderRight>
       </HeaderContiner>
     );
   }
