@@ -6,47 +6,54 @@ const multerS3 = require("multer-s3");
 const multer = require("multer");
 const { ObjectId } = mongoose.Types;
 const Character = db.character;
-// const redis = require("redis");
+const redis = require("redis");
 let app = express.Router();
 console.log(process.env.REDIS_PORT);
-console.log(process.env.REDIS_HOST);
+const redisUrl = process.env.REDIS_URL;
+// console.log(redisUrl);
 
 // Create a Redis client
-// const redisClient = redis.createClient({
-//   port: process.env.REDIS_PORT,
-//   host: process.env.REDIS_HOST
-// });
+const redisClient = redis.createClient({
+  url: redisUrl
+  // port: process.env.REDIS_PORT,
+  // host: process.env.REDIS_HOST
+});
 
-// redisClient.connect();
-// redisClient.on("connect", () => {
-//   console.log("Connected to Redis");
-// });
+// Custom comparison function
+function compareByCharacterWeightDesc(a, b) {
+  return b.characterWeight - a.characterWeight;
+}
 
-// redisClient.on("error", function(error) {
-//   console.error(error);
-// });
+redisClient.connect();
+redisClient.on("connect", () => {
+  console.log("Connected to Redis");
+});
+
+redisClient.on("error", function(error) {
+  console.error(error);
+});
 
 // Middleware function to check cache
-// const checkCache = async (req, res, next) => {
-//   // Retrieve data from Redis cache
-//   try {
-//     const result = await redisClient.get("charaterCategoryMap");
-//     if (result !== null) {
-//       // Data exitts in cache, send the cached response
-//       console.log("cached results");
-//       // res.send();
-//       res.json({
-//         finalResponse: JSON.parse(result)
-//       });
-//     } else {
-//       // Data doesn't exist in cache, move to the next middleware
-//       console.log("UnCached results");
-//       next();
-//     }
-//   } catch (e) {
-//     res.send("Something went wrong");
-//   }
-// };
+const checkCache = async (req, res, next) => {
+  // Retrieve data from Redis cache
+  try {
+    const result = await redisClient.get("charaterCategoryMap");
+    if (result !== null) {
+      // Data exitts in cache, send the cached response
+      console.log("cached results");
+      // res.send();
+      res.json({
+        finalResponse: JSON.parse(result)
+      });
+    } else {
+      // Data doesn't exist in cache, move to the next middleware
+      console.log("UnCached results");
+      next();
+    }
+  } catch (e) {
+    res.send("Something went wrong");
+  }
+};
 
 const upload = multer({
   storage: multerS3({
@@ -58,7 +65,7 @@ const upload = multer({
   })
 });
 
-app.get("/charaterCategoryMap", async (req, res) => {
+app.get("/charaterCategoryMap", checkCache, async (req, res) => {
   try {
     Character.aggregate([
       {
@@ -84,18 +91,22 @@ app.get("/charaterCategoryMap", async (req, res) => {
           objects: 1 // Include the objects field
         }
       }
-    ]).exec((err, results) => {
+    ]).exec(async (err, results) => {
       if (err) {
         console.log(err);
       } else {
-        console.log("results");
-        const finalResponse = {};
+        // console.log("results");
+        const allCharacters = await Character.find({ isDraft: false });
+        const finalResponse = {
+          all: allCharacters.sort(compareByCharacterWeightDesc)
+        };
         results.map(result => {
-          finalResponse[result["key"].value] = result["objects"];
+          finalResponse[result["key"].value] = result["objects"].sort(
+            compareByCharacterWeightDesc
+          );
         });
-        console.log(finalResponse);
         // Store the response in Redis cache with an expiration time of 24 hours (86400 seconds)
-        // redisClient.set("charaterCategoryMap", JSON.stringify(finalResponse));
+        redisClient.set("charaterCategoryMap", JSON.stringify(finalResponse));
         console.log("Mongoose data....");
         res.json({
           finalResponse
@@ -110,7 +121,7 @@ app.get("/charaterCategoryMap", async (req, res) => {
 // Endpoint to invalidate the cache
 app.get("/invalidate/:endpoint", async (req, res) => {
   const { endpoint } = req.params;
-  // const result = await redisClient.del(endpoint);
+  const result = await redisClient.del(endpoint);
   res.send("Invalidated cache entry");
 });
 
@@ -144,7 +155,7 @@ app.get("/:id", async (req, res) => {
 app.post("/:id", async (req, res) => {
   try {
     const serviceId = req.params.id;
-    // const result = await redisClient.del("charaterCategoryMap");
+    const result = await redisClient.del("charaterCategoryMap");
     Character.findByIdAndDelete(serviceId, (err, doc) => {
       res.json({ status: true });
     });
@@ -156,7 +167,7 @@ app.post("/:id", async (req, res) => {
 app.post("/", upload.single("file"), async (req, res) => {
   try {
     let data = { ...req.body };
-    // const result = await redisClient.del("charaterCategoryMap");
+    const result = await redisClient.del("charaterCategoryMap");
     if (req?.file?.location) {
       data = {
         ...data,

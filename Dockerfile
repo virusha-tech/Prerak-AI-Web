@@ -14,5 +14,4 @@ RUN npm install
 COPY . .
 
 # Set the default command for the container to run the app
-EXPOSE 3080
 CMD [ "npm", "run", "api-prod" ]
