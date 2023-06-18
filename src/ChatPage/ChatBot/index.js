@@ -10,7 +10,7 @@ const contentStyle = {
   fontSize: "16px",
   padding: "10px",
   scrollbarWidth: 0,
-  height: "90%",
+  height: "80%",
   "-ms-overflow-style": "none",
   "scrollbar-width": "none",
   "::-webkit-scrollbar": { width: 0 }

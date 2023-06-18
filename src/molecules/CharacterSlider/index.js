@@ -39,7 +39,11 @@ function ChipSlider({ characters, selectedChipIndex }) {
         filtersWrapperRectangle
       });
     });
-  }, []);
+  }, [selectedChipIndex]);
+
+  // useEffect(() => {
+  //   console.log("characters?.length", selectedChipIndex);
+  // }, [selectedChipIndex]);
 
   useEffect(() => {
     filterWrapperRef.current.scrollLeft = 0;
@@ -148,6 +152,7 @@ function ChipSlider({ characters, selectedChipIndex }) {
   const handleCategoryClick = ({ _id, characterName }) => {
     history.push(`/chat/${slug(characterName)}/${_id}`);
   };
+
   return (
     <FilterSlider>
       <FilterSliderWrapper ref={filterWrapperRef}>

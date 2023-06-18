@@ -15,7 +15,8 @@ function createData(
   currentStatus,
   id,
   isDraft,
-  isLocked
+  isLocked,
+  characterWeight
 ) {
   return {
     characterName,
@@ -24,7 +25,8 @@ function createData(
     id,
     isDraft,
     isLocked,
-    updatedAt: moment(updatedAt).format("D MMM, YYYY")
+    updatedAt: moment(updatedAt).format("D MMM, YYYY"),
+    characterWeight: +characterWeight
   };
 }
 @inject("store")
@@ -58,7 +60,8 @@ class AdminServiceDB extends Component {
           currentStatus,
           _id: id,
           isDraft,
-          isLocked
+          isLocked,
+          characterWeight
         } = service;
 
         return createData(
@@ -68,7 +71,8 @@ class AdminServiceDB extends Component {
           currentStatus,
           id,
           isDraft,
-          isLocked
+          isLocked,
+          characterWeight
         );
       });
       this.setState({
@@ -92,6 +96,7 @@ class AdminServiceDB extends Component {
     );
 
     const rows = services.data.docs.map(service => {
+      console.log(service, service);
       const {
         characterName,
         characterOwnerName,
@@ -99,7 +104,8 @@ class AdminServiceDB extends Component {
         currentStatus,
         _id: id,
         isDraft,
-        isLocked
+        isLocked,
+        characterWeight
       } = service;
 
       return createData(
@@ -109,7 +115,8 @@ class AdminServiceDB extends Component {
         currentStatus,
         id,
         isDraft,
-        isLocked
+        isLocked,
+        characterWeight
       );
     });
     this.setState(

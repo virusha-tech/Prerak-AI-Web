@@ -120,11 +120,18 @@ const headCells = [
     label: "Status"
   },
   {
+    id: "weight",
+    numeric: true,
+    disablePadding: false,
+    label: "Weight"
+  },
+  {
     id: "viewForm",
     numeric: true,
     disablePadding: false,
     label: "Navigate"
   },
+
   {
     id: "action",
     numeric: true,
@@ -262,6 +269,7 @@ export const EnhancedTable = props => {
                 <TableBody>
                   {stableSort(props.rows, getComparator(order, orderBy)).map(
                     (row, index, array) => {
+                      console.log("row", row);
                       return (
                         <StyledTableRow
                           role="checkbox"
@@ -295,6 +303,9 @@ export const EnhancedTable = props => {
                               : row?.isLocked
                               ? "Locked"
                               : "Live"}
+                          </StyledTableCell>
+                          <StyledTableCell align="center">
+                            {row?.characterWeight || "NA"}
                           </StyledTableCell>
                           <StyledTableCell align="center">
                             <Button
@@ -427,7 +438,7 @@ export const EnhancedTable = props => {
               </Table>
             </TableContainer>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
+              rowsPerPageOptions={[5, 10, 25, 50, 100]}
               component="div"
               count={props.count}
               rowsPerPage={rowsPerPage}
