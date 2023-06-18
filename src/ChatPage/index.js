@@ -193,9 +193,9 @@ const Share = styled.div`
 const ChatPageWrapper = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
   /* height: 88vh; */
   height: 94vh;
+  align-items: flex-start;
 
   @media only screen and (max-width: 576px) {
     height: 94vh;
