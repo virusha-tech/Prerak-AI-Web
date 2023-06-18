@@ -9,7 +9,7 @@ import User from "../../assets/User.png";
 const contentStyle = {
   fontSize: "16px",
   padding: "10px",
-  height: "50vh",
+  height: "70vh",
   //   width: "100%",
   scrollbarWidth: 0,
   "-ms-overflow-style": "none",
