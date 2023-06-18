@@ -20,6 +20,7 @@ import Select from "@mui/material/Select";
 import { useEffect } from "react";
 import Switch from "@mui/material/Switch";
 import { useHistory } from "react-router-dom";
+import slug from "slug";
 
 const StyledTableCell = matStyled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -235,8 +236,8 @@ export const EnhancedTable = props => {
     history.push(`create/${id}`);
   };
 
-  const handleClick = id => {
-    history.push(`/chat/${id}`);
+  const handleClick = (name, id) => {
+    history.push(`/chat/${slug(name)}/${id}`);
   };
 
   return (
@@ -298,7 +299,9 @@ export const EnhancedTable = props => {
                           <StyledTableCell align="center">
                             <Button
                               variant="outlined"
-                              onClick={() => handleClick(row?.id)}
+                              onClick={() =>
+                                handleClick(row?.characterName, row?.id)
+                              }
                             >
                               View Character
                             </Button>
