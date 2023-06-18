@@ -6,6 +6,7 @@ import { observer, inject } from "mobx-react";
 import { withRouter } from "react-router-dom";
 import CuractedCharacterSlider from "../molecules/CharacterSlider/index";
 import GeneratingSpinner from "../atoms/GeneratingSpinner";
+import Footer from "../Footer/index";
 
 @inject("store")
 @observer
@@ -64,46 +65,51 @@ class HomePage extends Component {
 
   render() {
     return (
-      <HomePageWrapper>
-        <SidebarWrapper>
-          <Sidebar>
-            {MenuList.map(({ label }) => {
-              return (
-                <MenuItem key={label}>
-                  <MenuItemImg
-                    src={require(`../assets/${label}.svg`).default}
-                    alt={`${label} Logo`}
-                    width={label === "Community" || label === "Feed" ? 24 : 18}
-                  />
-                  <MenuItemLabel>{label}</MenuItemLabel>
-                </MenuItem>
-              );
-            })}
-          </Sidebar>
-        </SidebarWrapper>
-        <MainContent>
-          <ChipSlider
-            categories={this.props.store.categories}
-            selectedChipIndex={this.state.selectedChipIndex}
-            handleCategoryUpdate={this.handleCategoryUpdate}
-          />
-          {Object.keys(this.props.store.curatedCategoryCharacter).length ? (
-            <CuractedCharacterSlider
-              characters={this.props.store.curatedCategoryCharacter[
-                this.state.selectedChipLabel
-              ]?.filter(character => {
-                return character.characterName
-                  .toLowerCase()
-                  .includes(this.props.store.searchValue.toLowerCase());
+      <>
+        <HomePageWrapper>
+          <SidebarWrapper>
+            <Sidebar>
+              {MenuList.map(({ label }) => {
+                return (
+                  <MenuItem key={label}>
+                    <MenuItemImg
+                      src={require(`../assets/${label}.svg`).default}
+                      alt={`${label} Logo`}
+                      width={
+                        label === "Community" || label === "Feed" ? 24 : 18
+                      }
+                    />
+                    <MenuItemLabel>{label}</MenuItemLabel>
+                  </MenuItem>
+                );
               })}
+            </Sidebar>
+          </SidebarWrapper>
+          <MainContent>
+            <ChipSlider
+              categories={this.props.store.categories}
               selectedChipIndex={this.state.selectedChipIndex}
-              handleClick={this.handleCharacterClick}
+              handleCategoryUpdate={this.handleCategoryUpdate}
             />
-          ) : (
-            <GeneratingSpinner>Loading Characters...</GeneratingSpinner>
-          )}
-        </MainContent>
-      </HomePageWrapper>
+            {Object.keys(this.props.store.curatedCategoryCharacter).length ? (
+              <CuractedCharacterSlider
+                characters={this.props.store.curatedCategoryCharacter[
+                  this.state.selectedChipLabel
+                ]?.filter(character => {
+                  return character.characterName
+                    .toLowerCase()
+                    .includes(this.props.store.searchValue.toLowerCase());
+                })}
+                selectedChipIndex={this.state.selectedChipIndex}
+                handleClick={this.handleCharacterClick}
+              />
+            ) : (
+              <GeneratingSpinner>Loading Characters...</GeneratingSpinner>
+            )}
+          </MainContent>
+        </HomePageWrapper>
+        <Footer />
+      </>
     );
   }
 }

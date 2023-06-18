@@ -98,7 +98,6 @@ class App extends Component {
                     <Redirect to="/" />
                   </Route>
                 </Switch>
-                <Footer />
               </Router>
             </AppWrapper>
           </Provider>

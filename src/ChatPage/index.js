@@ -147,12 +147,16 @@ const DisclaimerWrapper = styled.h1`
   p {
     margin-bottom: 20px;
   }
+  @media only screen and (max-width: 576px) {
+    height: 6vh;
+  }
 `;
 
 const Disclaimer = styled.div`
   color: white;
   flex: 1;
   text-align: center;
+
   h1 {
     font-style: normal;
     font-weight: 600;
@@ -190,7 +194,12 @@ const ChatPageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 88vh;
+  /* height: 88vh; */
+  height: 94vh;
+
+  @media only screen and (max-width: 576px) {
+    height: 94vh;
+  }
 `;
 
 const EmptyContainer = styled.div`
@@ -222,7 +231,10 @@ const BotWrapper = styled.div`
     color: #ffffff;
     padding: 5px 40px;
     margin: 0 auto;
-    /* width: 388px; */
+    margin-bottom: 10px;
+    @media only screen and (max-width: 576px) {
+      height: 4vh;
+    }
   }
 `;
 
