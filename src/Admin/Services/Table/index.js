@@ -88,7 +88,7 @@ class AdminServiceDB extends Component {
 
   async handleChangePage(pageNumber, pageSize = 10, cb) {
     const services = await this.props.store.api.get(
-      `/services?page=${pageNumber}&pageSize=${pageSize}`
+      `/services?page=${pageNumber + 1}&pageSize=${pageSize}`
     );
 
     const rows = services.data.docs.map(service => {

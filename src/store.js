@@ -33,6 +33,7 @@ class appStore {
 
   // User Profile
   @observable profile = {};
+  @observable searchValue = "";
   @observable isLoggedIn = false;
   @observable loginLoading = false;
 
@@ -112,6 +113,14 @@ class appStore {
   //   }
   // };
 
+  updateSearchResult = event => {
+    if (event) {
+      this.searchValue = event.target.value;
+    } else {
+      this.searchValue = "";
+    }
+  };
+
   refreshCharacters = async () => {
     this.getCuratedCategory();
   };
@@ -119,7 +128,18 @@ class appStore {
   getCuratedCategory = async () => {
     const response = await this.api.get(`/services/charaterCategoryMap`);
     this.isCuratedCategoryLoading = false;
-    this.curatedCategoryCharacter = response.data.finalResponse;
+    // const allResult = Object.keys(response.data.finalResponse).reduce(
+    //   (accumulator, currentValue) => {
+    //     return accumulator.concat(response.data.finalResponse[currentValue]);
+    //   },
+    //   []
+    // );
+
+    // console.log("response.data.finalResponse", response.data.finalResponse);
+    this.curatedCategoryCharacter = {
+      // all: allResult,
+      ...response.data.finalResponse
+    };
     return "done";
   };
 

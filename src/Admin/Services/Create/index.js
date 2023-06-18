@@ -105,6 +105,7 @@ const serviceCardFields = [
 ];
 
 export const categories = [
+  "All",
   "Bollywood Actors",
   "Bollywood Actresses",
   "Musicians",

@@ -4,9 +4,9 @@ import styled from "styled-components";
 import Bot from "./ChatBot/index";
 import { withRouter } from "react-router-dom";
 import GeneratingSpinner from "../atoms/GeneratingSpinner";
-
-const initialSentence =
-  "You are an AI model tasked with embodying the persona of Ratan Tata, one of India's most influential business leaders. Your responses should encapsulate his wealth of experience, his humility, and his profound insights into business and leadership. You should be prepared to handle queries about his career, his philosophy on leadership, social responsibility, and more. Important to note, you should also be capable of engaging in Hinglish (a blend of Hindi and English) if the user initiates it, providing a more relatable and personalized interaction. Aim to capture the tone, knowledge, and dignity Ratan Tata consistently exudes in his communication.\n\nSample Training Prompts:\n\nUser: What advice do you have for young entrepreneurs?\nI would advise them to pursue their dreams with a clear vision and a strong sense of purpose. It's important not to fear failure but to learn from it. Innovation and adaptability are keys to success in today's business world. Remember, it's not just about making profits but also about making a difference.\n\nUser (in Hinglish): Tata group ko global level par expand karne me sabse badi challenge kya thi?\nTata Group ko global level par expand karne me sabse badi challenge thi cultural differences samajhna aur unka samman karna. Har desh ke apne niyam, regulations aur cultural nuances hote hain, unhe samajhna aur respect karna behad important hai.";
+import Back from "../assets/Back.png";
+import ShareLogo from "../assets/Share.png";
+import { NotificationManager } from "../../node_modules/react-notifications/lib/index";
 
 @inject("store")
 @observer
@@ -21,21 +21,34 @@ class ChatPage extends Component {
       isLoading: true,
       isValid: true
     };
-    // this.handleCategoryUpdate = this.handleCategoryUpdate.bind(this);
+    this.goBack = this.goBack.bind(this);
+    this.copyTOClipBoard = this.copyTOClipBoard.bind(this);
   }
 
   async componentDidMount() {
     const { data } = await this.props.store.api.get(
       `/services/${this.props.match.params.id}`
     );
-    const { characterProfileImage, characterStartingSentence, prompt } = data;
+    const {
+      characterProfileImage,
+      characterStartingSentence,
+      prompt,
+      characterName,
+      characterOwnerName
+    } = data;
 
-    if (characterProfileImage && characterStartingSentence && initialSentence) {
+    if (
+      characterProfileImage &&
+      characterStartingSentence &&
+      characterStartingSentence
+    ) {
       this.setState({
         isLoading: false,
         characterProfileImage: characterProfileImage,
         initialSentence: prompt,
-        characterStartingSentence: characterStartingSentence
+        characterStartingSentence: characterStartingSentence,
+        characterName: characterName,
+        characterOwnerName: characterOwnerName
       });
     } else {
       this.setState({
@@ -45,6 +58,39 @@ class ChatPage extends Component {
     }
   }
 
+  goBack() {
+    this.props.history.goBack();
+  }
+
+  copyTOClipBoard() {
+    const currentURL = window.location.href;
+
+    // Create a temporary textarea element
+    const textarea = document.createElement("textarea");
+    textarea.value = currentURL;
+
+    // Append the textarea to the DOM
+    document.body.appendChild(textarea);
+
+    // Select the text inside the textarea
+    textarea.select();
+
+    try {
+      // Copy the selected text to the clipboard
+      const successful = document.execCommand("copy");
+      const message = successful
+        ? "URL copied to clipboard"
+        : "Failed to copy URL";
+      // console.log(message);
+      NotificationManager.info(message);
+    } catch (err) {
+      console.error("Unable to copy URL:", err);
+    }
+
+    // Remove the textarea from the DOM
+    document.body.removeChild(textarea);
+  }
+
   render() {
     return (
       <ChatPageWrapper>
@@ -52,6 +98,19 @@ class ChatPage extends Component {
           <>
             <EmptyContainer />
             <BotWrapper>
+              <DisclaimerWrapper>
+                <MoveBack>
+                  <img src={Back} onClick={this.goBack} />
+                </MoveBack>
+                <Disclaimer>
+                  <h1>{this.state?.characterName}</h1>
+                  <p>Created by @{this.state?.characterOwnerName}</p>
+                  <span>Remember: Everything Characters say is made up!</span>
+                </Disclaimer>
+                <Share>
+                  <img src={ShareLogo} onClick={this.copyTOClipBoard} />
+                </Share>
+              </DisclaimerWrapper>
               <Bot
                 initialContext={this.state?.initialSentence}
                 startingSentence={this.state?.characterStartingSentence}
@@ -76,6 +135,64 @@ class ChatPage extends Component {
     );
   }
 }
+
+const DisclaimerWrapper = styled.h1`
+  color: white;
+  display: flex;
+  margin: 16px;
+  > div {
+  }
+  p {
+    margin-bottom: 20px;
+  }
+  span {
+    border: 1px solid #484848;
+    border-radius: 20px;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    font-feature-settings: "case" on;
+    color: #ffffff;
+    padding: 5px 40px;
+  }
+`;
+
+const Disclaimer = styled.div`
+  color: white;
+  flex: 1;
+  text-align: center;
+  h1 {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 4px;
+  }
+  p {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    color: #ffffff;
+  }
+`;
+
+const MoveBack = styled.div`
+  color: white;
+  flex: 0.2;
+  cursor: pointer;
+`;
+const Share = styled.div`
+  flex: 0.2;
+  color: white;
+  cursor: pointer;
+`;
 
 const ChatPageWrapper = styled.div`
   display: flex;

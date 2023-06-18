@@ -4,14 +4,24 @@ import { observer, inject } from "mobx-react";
 import { Link, withRouter } from "react-router-dom";
 import CompanyLogo from "../assets/Logo.svg";
 
-// @inject("store")
+@inject("store")
 @observer
 class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isAdmin: window.location.pathname.includes("admin")
+      isAdmin: window.location.pathname.includes("admin"),
+      isSearchHidden: window.location.pathname.includes("chat")
     };
+  }
+
+  componentDidMount() {
+    this.props.history.listen((location, action) => {
+      // location is an object like window.location
+      this.setState({
+        isSearchHidden: location.pathname.includes("chat")
+      });
+    });
   }
 
   render() {
@@ -22,23 +32,29 @@ class Header extends Component {
             <img src={CompanyLogo} alt="Company Logo" />
           </Link>
         </HeaderLeft>
-        <HeaderSearch>
-          <input placeholder="search...." />
-          <SearchIcon
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+        {!this.state.isSearchHidden ? (
+          <HeaderSearch>
+            <input
+              placeholder="search...."
+              value={this.props.store.searchValue}
+              onChange={this.props.store.updateSearchResult}
             />
-          </SearchIcon>
-        </HeaderSearch>
+            <SearchIcon
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+              />
+            </SearchIcon>
+          </HeaderSearch>
+        ) : null}
         <HeaderRight>
           <h1>Search</h1>
         </HeaderRight>

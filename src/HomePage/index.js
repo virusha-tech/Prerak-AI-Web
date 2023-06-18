@@ -21,6 +21,7 @@ class HomePage extends Component {
 
   handleCategoryUpdate(category, index) {
     this.props.history.push(`/${category.value}`);
+    this.props.store.updateSearchResult();
     this.setState({
       selectedChipIndex: index,
       selectedChipLabel: category.value
@@ -88,11 +89,13 @@ class HomePage extends Component {
           />
           {Object.keys(this.props.store.curatedCategoryCharacter).length ? (
             <CuractedCharacterSlider
-              characters={
-                this.props.store.curatedCategoryCharacter[
-                  this.state.selectedChipLabel
-                ]
-              }
+              characters={this.props.store.curatedCategoryCharacter[
+                this.state.selectedChipLabel
+              ]?.filter(character => {
+                return character.characterName
+                  .toLowerCase()
+                  .includes(this.props.store.searchValue.toLowerCase());
+              })}
               selectedChipIndex={this.state.selectedChipIndex}
               handleClick={this.handleCharacterClick}
             />
