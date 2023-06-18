@@ -9,9 +9,8 @@ import User from "../../assets/User.png";
 const contentStyle = {
   fontSize: "16px",
   padding: "10px",
-  height: "70vh",
-  //   width: "100%",
   scrollbarWidth: 0,
+  height: "90%",
   "-ms-overflow-style": "none",
   "scrollbar-width": "none",
   "::-webkit-scrollbar": { width: 0 }
@@ -138,4 +137,9 @@ class Bot extends React.Component {
 }
 
 export default Bot;
-const ContextChatBotWrapper = styled.div``;
+const ContextChatBotWrapper = styled.div`
+  height: 80vh;
+  .rsc {
+    height: 100%;
+  }
+`;
