@@ -110,6 +110,8 @@ class App extends Component {
 
 const AppWrapper = styled.div`
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background-color: ${({ theme }) => {
     return theme.primary;
   }};

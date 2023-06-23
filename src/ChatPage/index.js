@@ -196,13 +196,13 @@ const Share = styled.div`
 const ChatPageWrapper = styled.div`
   display: flex;
   justify-content: center;
-  /* height: 88vh; */
-  height: 94vh;
   align-items: flex-start;
+  flex: 1;
+  height: 100%;
 
-  @media only screen and (max-width: 576px) {
+  /* @media only screen and (max-width: 576px) {
     height: 94vh;
-  }
+  } */
 `;
 
 const EmptyContainer = styled.div`
@@ -214,9 +214,10 @@ const EmptyContainer = styled.div`
 
 const BotWrapper = styled.div`
   flex: 0.4;
+  align-self: stretch;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: initial;
   justify-content: space-between;
   @media only screen and (max-width: 576px) {
     flex: 1;
@@ -225,7 +226,7 @@ const BotWrapper = styled.div`
     left: 0px;
     right: 0px;
     top: 6vh;
-    height: 94vh;
+    /* height: 94vh; */
   }
   .alert {
     border: 1px solid #484848;
