@@ -84,7 +84,6 @@ class Bot extends React.Component {
   }
 
   render() {
-    console.log("props", this.props.characterProfileImage);
     return (
       <ContextChatBotWrapper className="chatbotwrapper">
         <ChatBot
@@ -138,7 +137,7 @@ class Bot extends React.Component {
 
 export default Bot;
 const ContextChatBotWrapper = styled.div`
-  height: 80vh;
+  height: 100%;
   .rsc {
     height: 100%;
   }

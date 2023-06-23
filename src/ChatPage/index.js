@@ -7,6 +7,7 @@ import GeneratingSpinner from "../atoms/GeneratingSpinner";
 import Back from "../assets/Back.png";
 import ShareLogo from "../assets/Share.png";
 import { NotificationManager } from "../../node_modules/react-notifications/lib/index";
+import { white } from "../../node_modules/tailwindcss/colors";
 
 @inject("store")
 @observer
@@ -97,21 +98,23 @@ class ChatPage extends Component {
         {!this.state.isLoading ? (
           <>
             <EmptyContainer />
-            <BotWrapper className="botWrapper">
-              <DisclaimerWrapper>
-                <MoveBack>
-                  <img src={Back} onClick={this.goBack} />
-                </MoveBack>
-                <Disclaimer>
-                  <h1>{this.state?.characterName}</h1>
-                  <p>Created by @{this.state?.characterOwnerName}</p>
-                </Disclaimer>
-                <Share>
-                  <img src={ShareLogo} onClick={this.copyTOClipBoard} />
-                </Share>
-              </DisclaimerWrapper>
-              <div className="alert">
-                Remember: Everything Characters say is made up!
+            <BotWrapper>
+              <div>
+                <DisclaimerWrapper>
+                  <MoveBack>
+                    <img src={Back} onClick={this.goBack} />
+                  </MoveBack>
+                  <Disclaimer>
+                    <h1>{this.state?.characterName}</h1>
+                    <p>Created by @{this.state?.characterOwnerName}</p>
+                  </Disclaimer>
+                  <Share>
+                    <img src={ShareLogo} onClick={this.copyTOClipBoard} />
+                  </Share>
+                </DisclaimerWrapper>
+                <div className="alert">
+                  Remember: Everything Characters say is made up!
+                </div>
               </div>
               <Bot
                 initialContext={this.state?.initialSentence}
@@ -211,6 +214,10 @@ const EmptyContainer = styled.div`
 
 const BotWrapper = styled.div`
   flex: 0.4;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
   @media only screen and (max-width: 576px) {
     flex: 1;
     position: absolute;
@@ -218,6 +225,7 @@ const BotWrapper = styled.div`
     left: 0px;
     right: 0px;
     top: 6vh;
+    height: 94vh;
   }
   .alert {
     border: 1px solid #484848;
