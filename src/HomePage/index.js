@@ -167,7 +167,6 @@ const MenuItemImg = styled.img`
 const MainContent = styled.div`
   flex: 1;
   overflow-x: hidden;
-  height: 100vh;
   padding: 16px 8px 8px;
 `;
 
