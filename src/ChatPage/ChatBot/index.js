@@ -88,14 +88,14 @@ class Bot extends React.Component {
       <ContextChatBotWrapper className="chatbotwrapper">
         <ChatBot
           //   recognitionEnable={true}
-          style={{ height: "100%" }}
-          inputStyle={{
-            "border-radius": "0px",
-            background: "#2B3441",
-            border: "1px solid #384455",
-            "border-radius": "8px",
-            color: "#FFFFFF"
-          }}
+          // style={{ height: "100%" }}
+          // inputStyle={{
+          //   "border-radius": "0px",
+          //   background: "#2B3441",
+          //   border: "1px solid #384455",
+          //   "border-radius": "8px",
+          //   color: "#FFFFFF"
+          // }}
           submitButtonStyle={{
             fill: "#FFFFFF",
             height: "96%"

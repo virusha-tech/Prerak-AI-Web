@@ -99,7 +99,7 @@ class ChatPage extends Component {
           <>
             <EmptyContainer />
             <BotWrapper>
-              <div>
+              {/* <div>
                 <DisclaimerWrapper>
                   <MoveBack>
                     <img src={Back} onClick={this.goBack} />
@@ -115,7 +115,7 @@ class ChatPage extends Component {
                 <div className="alert">
                   Remember: Everything Characters say is made up!
                 </div>
-              </div>
+              </div> */}
               <Bot
                 initialContext={this.state?.initialSentence}
                 startingSentence={this.state?.characterStartingSentence}

@@ -6,9 +6,9 @@
 }
 .rsc-container {
   border-radius: 0px !important;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  height: inherit !important;
 }
 
 .rsc-input {
