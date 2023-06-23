@@ -226,7 +226,6 @@ const BotWrapper = styled.div`
     left: 0px;
     right: 0px;
     top: 6vh;
-    /* height: 94vh; */
   }
   .alert {
     border: 1px solid #484848;

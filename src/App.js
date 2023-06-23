@@ -76,7 +76,7 @@ class App extends Component {
           <Provider store={window.store}>
             <AppWrapper>
               <Router>
-                {/* <Header /> */}
+                <Header />
                 <Switch>
                   <Route path="/admin/c2f269ef-f0f2-475b-a658-7f166e0b6749">
                     <Admin />
