@@ -11,7 +11,7 @@ const contentStyle = {
   padding: "10px",
   scrollbarWidth: 0,
   height: "inherit",
-  "max-height": "calc(100% - 58px)",
+  "max-height": "calc(100% - 78px)",
   "-ms-overflow-style": "none",
   "scrollbar-width": "none",
   "::-webkit-scrollbar": { width: 0 }

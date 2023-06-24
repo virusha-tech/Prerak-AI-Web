@@ -19,6 +19,14 @@
 }
 
 .rsc-input {
+  margin-bottom: 20px;
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-radius: 8px;
+  border: 1px solid #384455;
+  background: #2b3441;
+  color: white;
+
   &::placeholder {
     color: white;
   }
