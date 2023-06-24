@@ -1,7 +1,10 @@
 .rsc-content {
   flex: 1;
   height: initial;
-  // max-height: calc(100% - 90px) !important;
+  max-height: calc(100% - 78px) !important;
+  @media only screen and (max-width: 600px) {
+    max-height: calc(100% - 58px) !important;
+  }
   &::-webkit-scrollbar {
     display: none;
   }
@@ -20,12 +23,16 @@
 
 .rsc-input {
   margin-bottom: 20px;
-  border-bottom-left-radius: 0px !important;
-  border-bottom-right-radius: 0px !important;
   border-radius: 8px;
   border: 1px solid #384455;
   background: #2b3441;
   color: white;
+  border-radius: 10px !important;
+  border: none !important;
+
+  @media only screen and (max-width: 600px) {
+    margin-bottom: 0px;
+  }
 
   &::placeholder {
     color: white;
