@@ -5,11 +5,14 @@ import App from "./App";
 import "react-notifications/lib/notifications.css";
 import "./index.scss";
 import mixpanel from "mixpanel-browser";
+import { BrowserRouter as Router } from "react-router-dom";
 // mixpanel.init("21f42c6e5bf4444d40583b6a127d0707"); //TODO:
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <App />
+    </Router>
   </React.StrictMode>,
   document.getElementById("root")
 );

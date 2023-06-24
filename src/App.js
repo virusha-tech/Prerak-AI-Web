@@ -1,4 +1,4 @@
-import styled, { ThemeProvider } from "styled-components";
+import styled, { css, ThemeProvider } from "styled-components";
 import React, { Component } from "react";
 
 import { Provider } from "mobx-react";
@@ -14,6 +14,7 @@ import {
   Redirect,
   Route
 } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import { NotificationContainer } from "react-notifications";
 
@@ -65,40 +66,50 @@ const materialtheme = createTheme({
 
 @observer
 class App extends Component {
-  //   state = {
-  //     isAdmin: window.store.profile.accountType === "admin"
-  //   };
+  state = {
+    isChatScreen: window.location.pathname.includes("chat")
+  };
+
+  componentDidMount() {
+    this.props.history.listen((location, action) => {
+      // location is an object like window.location
+      this.setState({
+        isChatScreen: location.pathname.includes("chat")
+      });
+    });
+  }
 
   render() {
     return (
       <ThemeProvider theme={theme}>
         <MuiThemeProvider theme={materialtheme}>
           <Provider store={window.store}>
-            <AppWrapper>
-              <Router>
-                <Header />
-                <Switch>
-                  <Route path="/admin/c2f269ef-f0f2-475b-a658-7f166e0b6749">
-                    <Admin />
-                  </Route>
-                  <Route path="/chat/:heroname/:id" exact>
-                    <ChatPage />
-                  </Route>
-                  <Route path="/:id" exact>
-                    <HomePage />
-                  </Route>
-                  <Route path="/" exact>
-                    <HomePage />
-                  </Route>
+            <AppWrapper
+              className="appWrapper"
+              isChatScreen={this.state.isChatScreen}
+            >
+              <Header />
+              <Switch>
+                <Route path="/admin/c2f269ef-f0f2-475b-a658-7f166e0b6749">
+                  <Admin />
+                </Route>
+                <Route path="/chat/:heroname/:id" exact>
+                  <ChatPage />
+                </Route>
+                <Route path="/:id" exact>
+                  <HomePage />
+                </Route>
+                <Route path="/" exact>
+                  <HomePage />
+                </Route>
 
-                  {/* <Route path="/about" component={About} />
+                {/* <Route path="/about" component={About} />
               <Route path="/contact" component={Contact} /> */}
-                  {/* <Route component={NotFound} /> */}
-                  <Route path="*">
-                    <Redirect to="/" />
-                  </Route>
-                </Switch>
-              </Router>
+                {/* <Route component={NotFound} /> */}
+                <Route path="*">
+                  <Redirect to="/" />
+                </Route>
+              </Switch>
             </AppWrapper>
           </Provider>
           <NotificationContainer />
@@ -111,16 +122,23 @@ class App extends Component {
 const AppWrapper = styled.div`
   /* min-height: 100vh; */
   display: flex;
-  position: absolute;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  overflow: hidden;
+
   flex-direction: column;
   background-color: ${({ theme }) => {
     return theme.primary;
   }};
+
+  ${props =>
+    props.isChatScreen &&
+    css`
+      /* CSS block for variant="primary" */
+      position: absolute;
+      top: 0px;
+      bottom: 0px;
+      left: 0px;
+      right: 0px;
+      overflow: hidden;
+    `}
 `;
 
 // function PrivateRoute({ isAdmin, children, ...rest }) {
@@ -155,4 +173,4 @@ const AppWrapper = styled.div`
 //   );
 // }
 
-export default App;
+export default withRouter(App);

@@ -6,16 +6,17 @@ import { withRouter } from "react-router-dom";
 import Box from "@mui/material/Box";
 import CreateService from "./Create/index";
 import PromptService from "./Prompt/index";
+import PlaceholderQuestionsService from "./PlaceholderQuestions/index";
 
 const TabList = [
   {
     label: "Charcter Details",
     id: "characterDetails"
   },
-  //   {
-  //     label: "Sample Questions",
-  //     id: "sampleQuestions"
-  //   },
+  {
+    label: "Sample Questions",
+    id: "initialQuestions"
+  },
   {
     label: "Prompt",
     id: "prompt"
@@ -74,6 +75,16 @@ class AdminServices extends Component {
         return (
           <TabPanel value={this.state.activeTab} index={"characterDetails"}>
             <CreateService
+              store={this.props.store}
+              currentServiceId={this.state.currentServiceId}
+              postServiceDetails={this.postServiceDetails}
+            />
+          </TabPanel>
+        );
+      case "initialQuestions":
+        return (
+          <TabPanel value={this.state.activeTab} index={"initialQuestions"}>
+            <PlaceholderQuestionsService
               store={this.props.store}
               currentServiceId={this.state.currentServiceId}
               postServiceDetails={this.postServiceDetails}

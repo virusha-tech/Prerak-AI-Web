@@ -7,6 +7,7 @@ import { withRouter } from "react-router-dom";
 import CuractedCharacterSlider from "../molecules/CharacterSlider/index";
 import GeneratingSpinner from "../atoms/GeneratingSpinner";
 import Footer from "../Footer/index";
+import SampleQuestions from "../molecules/SampleQuestions/index";
 
 @inject("store")
 @observer
@@ -92,17 +93,31 @@ class HomePage extends Component {
               handleCategoryUpdate={this.handleCategoryUpdate}
             />
             {Object.keys(this.props.store.curatedCategoryCharacter).length ? (
-              <CuractedCharacterSlider
-                characters={this.props.store.curatedCategoryCharacter[
-                  this.state.selectedChipLabel
-                ]?.filter(character => {
-                  return character.characterName
-                    .toLowerCase()
-                    .includes(this.props.store.searchValue.toLowerCase());
-                })}
-                selectedChipIndex={this.state.selectedChipIndex}
-                handleClick={this.handleCharacterClick}
-              />
+              <>
+                <CuractedCharacterSlider
+                  characters={this.props.store.curatedCategoryCharacter[
+                    this.state.selectedChipLabel
+                  ]?.filter(character => {
+                    return character.characterName
+                      .toLowerCase()
+                      .includes(this.props.store.searchValue.toLowerCase());
+                  })}
+                  selectedChipIndex={this.state.selectedChipIndex}
+                  handleClick={this.handleCharacterClick}
+                />
+                <HorizontalRule />
+                <div></div>
+                <SampleQuestions
+                  characters={this.props.store.curatedCategoryCharacter[
+                    this.state.selectedChipLabel
+                  ]
+                    ?.filter(character => {
+                      return JSON.parse(character?.sampleQuestions || "[]")
+                        .length;
+                    })
+                    .slice(0, 10)}
+                />
+              </>
             ) : (
               <GeneratingSpinner>Loading Characters...</GeneratingSpinner>
             )}
@@ -113,6 +128,11 @@ class HomePage extends Component {
     );
   }
 }
+
+const HorizontalRule = styled.div`
+  margin: 40px 0px;
+  border-bottom: 1px solid #384455;
+`;
 
 const HomePageWrapper = styled.div`
   display: flex;

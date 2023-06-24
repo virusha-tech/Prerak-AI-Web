@@ -29,19 +29,24 @@ class Answer extends React.Component {
   }
 
   async componentDidMount() {
+    // console.log(this.props.steps.question.value)
     let response = await this.props.store.api.post("/ai/subsequentQuestion", {
       conversation: [
         ...toJS(this.props.store.chatLogs),
         {
           role: "user",
-          content: this.props.steps.question.value
+          content:
+            this.props.steps?.question?.value ||
+            this.props.steps?.sampleQuestion?.metadata?.initialQuestion
         }
       ]
     });
     this.props.store.setChatLogs([
       {
         role: "user",
-        content: this.props.steps.question.value
+        content:
+          this.props.steps?.question?.value ||
+          this.props.steps?.sampleQuestion?.metadata?.initialQuestion
       },
       {
         role: "assistant",
@@ -74,13 +79,64 @@ const StyledContainer = styled.div``;
 @inject("store")
 @observer
 class Bot extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   componentDidMount() {
+    this.getBotSteps = this.getBotSteps.bind(this);
     this.props.store.initializeChatLogs([
       {
         role: "system",
         content: this.props.initialContext
       }
     ]);
+  }
+
+  getBotSteps() {
+    if (this.props.initialQuestion) {
+      return [
+        {
+          id: "sampleQuestion",
+          component: <div>{this.props.initialQuestion}</div>,
+          metadata: {
+            initialQuestion: this.props.initialQuestion
+          },
+          trigger: "answer"
+        },
+        {
+          id: "answer",
+          component: <Answer />,
+          waitAction: true,
+          trigger: "question",
+          asMessage: true
+        },
+        {
+          id: "question",
+          user: true,
+          asMessage: true,
+          trigger: "answer"
+        }
+      ];
+    }
+    return [
+      {
+        id: "1",
+        message: this.props.startingSentence,
+        trigger: "question"
+      },
+      {
+        id: "question",
+        user: true,
+        trigger: "answer"
+      },
+      {
+        id: "answer",
+        component: <Answer />,
+        waitAction: true,
+        trigger: "question",
+        asMessage: true
+      }
+    ];
   }
 
   render() {
@@ -112,25 +168,7 @@ class Bot extends React.Component {
           placeholder="Type Message..."
           hideHeader={true}
           contentStyle={contentStyle}
-          steps={[
-            {
-              id: "1",
-              message: this.props.startingSentence,
-              trigger: "question"
-            },
-            {
-              id: "question",
-              user: true,
-              trigger: "answer"
-            },
-            {
-              id: "answer",
-              component: <Answer />,
-              waitAction: true,
-              trigger: "question",
-              asMessage: true
-            }
-          ]}
+          steps={this.getBotSteps()}
         />
       </ContextChatBotWrapper>
     );

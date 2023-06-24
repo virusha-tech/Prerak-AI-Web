@@ -148,6 +148,7 @@ class AdminServiceDB extends Component {
         return item;
       }
     });
+
     this.setState({
       rows: updatedRows
     });

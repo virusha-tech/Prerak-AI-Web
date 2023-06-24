@@ -16,11 +16,14 @@ class ChatPage extends Component {
     super(props);
     this.state = {
       initialSentence: "NA",
-      startingSentence:
-        "Namaste! Amitabh Bachchan speaking. How can I assist you in delving into the enchanting world of cinema today?",
       selectedChipLabel: "Helpers",
       isLoading: true,
-      isValid: true
+      isValid: true,
+      characterOwnerName: "",
+      characterProfileImage: "",
+      characterName: "",
+      characterStartingSentence: "",
+      initialQuestion: ""
     };
     this.goBack = this.goBack.bind(this);
     this.copyTOClipBoard = this.copyTOClipBoard.bind(this);
@@ -30,6 +33,7 @@ class ChatPage extends Component {
     const { data } = await this.props.store.api.get(
       `/services/${this.props.match.params.id}`
     );
+
     const {
       characterProfileImage,
       characterStartingSentence,
@@ -49,7 +53,10 @@ class ChatPage extends Component {
         initialSentence: prompt,
         characterStartingSentence: characterStartingSentence,
         characterName: characterName,
-        characterOwnerName: characterOwnerName
+        characterOwnerName: characterOwnerName,
+        initialQuestion: new URLSearchParams(this.props.location.search).get(
+          "initialQuestion"
+        )
       });
     } else {
       this.setState({
@@ -127,6 +134,7 @@ class ChatPage extends Component {
                   initialContext={this.state?.initialSentence}
                   startingSentence={this.state?.characterStartingSentence}
                   characterProfileImage={this.state?.characterProfileImage}
+                  initialQuestion={this.state?.initialQuestion}
                 />
               </div>
             </BotWrapper>
