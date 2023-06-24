@@ -167,6 +167,7 @@ app.post("/:id", async (req, res) => {
 app.post("/", upload.single("file"), async (req, res) => {
   try {
     let data = { ...req.body };
+    console.log(data);
     const result = await redisClient.del("charaterCategoryMap");
     if (req?.file?.location) {
       data = {

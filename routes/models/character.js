@@ -49,6 +49,10 @@ const CharacterSchema = new Schema(
       type: Number,
       default: 0
     },
+    sampleQuestions: {
+      type: String,
+      default: "[]"
+    },
     prompt: {
       type: String
     },
