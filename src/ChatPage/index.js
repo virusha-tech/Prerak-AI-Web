@@ -118,7 +118,6 @@ class ChatPage extends Component {
               </div>
               <div
                 style={{
-                  background: "green",
                   "overflow-y": "hidden",
                   height: "100%",
                   flex: 1

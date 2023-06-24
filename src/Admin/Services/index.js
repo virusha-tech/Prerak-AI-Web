@@ -163,7 +163,6 @@ function TabPanel(props) {
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
       {...other}
-      //   style={{ background: "white" }}
     >
       {value === index && (
         <Box sx={{ p: 1 }} md={{ p: 3 }}>
