@@ -69,7 +69,7 @@ const HeaderContiner = styled.div`
     return !isAdmin ? theme.primary : "red";
   }};
 
-  height: 6vh;
+  height: 58px;
   padding: 8px 32px;
   align-items: center;
   border-bottom: 1px solid #384455;

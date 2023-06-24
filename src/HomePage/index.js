@@ -116,7 +116,7 @@ class HomePage extends Component {
 
 const HomePageWrapper = styled.div`
   display: flex;
-  height: 100%;
+  flex: 1;
   color: white;
 `;
 

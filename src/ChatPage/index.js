@@ -204,7 +204,6 @@ const ChatPageWrapper = styled.div`
   justify-content: center;
   align-items: flex-start;
   flex: 1;
-  max-height: 94vh;
   overflow: hidden;
   /* overflow-y: auto;
   max-height: 94vh; */

@@ -24,7 +24,7 @@ const FooterContainer = styled.div`
   background-color: ${({ theme }) => {
     return theme.primary;
   }};
-  height: 6vh;
+  height: 58px;
   padding: 0px 32px;
   align-items: center;
   border-top: 1px solid #384455;
