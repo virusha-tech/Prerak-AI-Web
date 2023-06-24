@@ -158,9 +158,6 @@ const DisclaimerWrapper = styled.h1`
   p {
     margin-bottom: 20px;
   }
-  @media only screen and (max-width: 576px) {
-    height: 6vh;
-  }
 `;
 
 const Disclaimer = styled.div`
@@ -252,9 +249,6 @@ const BotWrapper = styled.div`
     padding: 5px 40px;
     margin: 0 auto;
     margin-bottom: 10px;
-    @media only screen and (max-width: 576px) {
-      height: 4vh;
-    }
   }
 `;
 
