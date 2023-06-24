@@ -233,7 +233,7 @@ const BotWrapper = styled.div`
     bottom: 0px;
     left: 0px;
     right: 0px;
-    top: 6vh;
+    top: 58px;
   }
   .alert {
     border: 1px solid #484848;

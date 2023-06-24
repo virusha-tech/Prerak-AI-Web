@@ -87,7 +87,9 @@ class Bot extends React.Component {
     return (
       <ContextChatBotWrapper className="chatbotwrapper">
         <ChatBot
-          //   recognitionEnable={true}
+          recognitionEnable={true}
+          botDelay={0}
+          customDelay={0}
           style={{ height: "100%" }}
           // inputStyle={{
           //   "border-radius": "0px",
