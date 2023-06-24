@@ -112,6 +112,12 @@ class Bot extends React.Component {
         },
         {
           id: "question",
+          validator: value => {
+            if (!value.length) {
+              return "Please enter text first..";
+            }
+            return true;
+          },
           user: true,
           asMessage: true,
           trigger: "answer"
@@ -127,6 +133,12 @@ class Bot extends React.Component {
       {
         id: "question",
         user: true,
+        validator: value => {
+          if (!value.length) {
+            return "Please enter text first..";
+          }
+          return true;
+        },
         trigger: "answer"
       },
       {
