@@ -153,6 +153,7 @@ const DisclaimerWrapper = styled.h1`
   color: white;
   display: flex;
   margin: 16px;
+  margin-bottom: 0px;
   > div {
   }
   p {
