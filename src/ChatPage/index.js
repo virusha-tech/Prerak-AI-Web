@@ -223,6 +223,9 @@ const ChatPageWrapper = styled.div`
 
 const EmptyContainer = styled.div`
   flex: 0.3;
+  @media only screen and (max-width: 1024px) {
+    flex: 0.2;
+  }
   @media only screen and (max-width: 576px) {
     flex: 0;
   }
@@ -235,6 +238,11 @@ const BotWrapper = styled.div`
   flex-direction: column;
   height: initial;
   justify-content: space-between;
+
+  @media only screen and (max-width: 1024px) {
+    flex: 0.9;
+  }
+
   @media only screen and (max-width: 576px) {
     flex: 1;
     position: absolute;

@@ -127,12 +127,14 @@ const AppWrapper = styled.div`
   background-color: ${({ theme }) => {
     return theme.primary;
   }};
+  min-height: 100vh;
 
   ${props =>
     props.isChatScreen &&
     css`
       /* CSS block for variant="primary" */
       position: absolute;
+      min-height: initial;
       top: 0px;
       bottom: 0px;
       left: 0px;
