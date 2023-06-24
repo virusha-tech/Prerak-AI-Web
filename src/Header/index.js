@@ -29,7 +29,7 @@ class Header extends Component {
       <HeaderContiner isAdmin={false}>
         <HeaderLeft>
           <Link to="/">
-            <img src={CompanyLogo} alt="Company Logo" />
+            <img src={CompanyLogo} alt="Company Logo" width={88} height={20} />
           </Link>
         </HeaderLeft>
         {!this.state.isSearchHidden ? (
@@ -78,9 +78,20 @@ const HeaderContiner = styled.div`
   left: 0;
   right: 0;
   z-index: 100;
+  justify-content: space-between;
+  @media only screen and (max-width: 600px) {
+    padding: 8px 10px;
+  }
 `;
 const HeaderLeft = styled.div`
   flex: 0.3;
+  @media only screen and (max-width: 600px) {
+    width: 88px;
+    a {
+      width: 88px;
+      display: inline-block;
+    }
+  }
 `;
 
 const HeaderSearch = styled.div`
@@ -109,9 +120,9 @@ const HeaderSearch = styled.div`
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
 
-  @media only screen and (max-width: 576px) {
+  /* @media only screen and (max-width: 576px) {
     display: none;
-  }
+  } */
 
   /* display: flex;
   align-items: center; */
@@ -119,6 +130,10 @@ const HeaderSearch = styled.div`
 
 const HeaderRight = styled.div`
   flex: 0.3;
+  @media only screen and (max-width: 576px) {
+    display: none;
+    flex: 0;
+  }
 `;
 
 const SearchIcon = styled.svg``;

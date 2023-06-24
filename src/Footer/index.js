@@ -9,7 +9,7 @@ class Footer extends Component {
     return (
       <FooterContainer>
         <FooterLeft>
-          <img src={CompanyLogo} alt="Company Logo" />
+          <img src={CompanyLogo} alt="Company Logo" width={88} height={20} />
         </FooterLeft>
         <FooterRight>© 2023 Prerak.ai All rights reserved.</FooterRight>
       </FooterContainer>
@@ -32,9 +32,12 @@ const FooterContainer = styled.div`
   align-items: center;
   position: relative;
   z-index: 10;
+  @media only screen and (max-width: 600px) {
+    padding: 8px 10px;
+  }
 `;
 const FooterLeft = styled.div`
-  flex: 0.3;
+  flex: 1;
 `;
 
 const FooterRight = styled.div`
@@ -43,4 +46,10 @@ const FooterRight = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
+
+  @media only screen and (max-width: 600px) {
+    flex: 0.5;
+    white-space: nowrap;
+    font-size: 14px;
+  }
 `;
