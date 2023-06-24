@@ -10,7 +10,8 @@ const contentStyle = {
   fontSize: "16px",
   padding: "10px",
   scrollbarWidth: 0,
-  height: "80%",
+  height: "inherit",
+  "max-height": "calc(100% - 58px)",
   "-ms-overflow-style": "none",
   "scrollbar-width": "none",
   "::-webkit-scrollbar": { width: 0 }
@@ -88,7 +89,7 @@ class Bot extends React.Component {
       <ContextChatBotWrapper className="chatbotwrapper">
         <ChatBot
           //   recognitionEnable={true}
-          // style={{ height: "100%" }}
+          style={{ height: "100%" }}
           // inputStyle={{
           //   "border-radius": "0px",
           //   background: "#2B3441",

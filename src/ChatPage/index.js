@@ -116,11 +116,20 @@ class ChatPage extends Component {
                   Remember: Everything Characters say is made up!
                 </div>
               </div>
-              <Bot
-                initialContext={this.state?.initialSentence}
-                startingSentence={this.state?.characterStartingSentence}
-                characterProfileImage={this.state?.characterProfileImage}
-              />
+              <div
+                style={{
+                  background: "green",
+                  "overflow-y": "hidden",
+                  height: "100%",
+                  flex: 1
+                }}
+              >
+                <Bot
+                  initialContext={this.state?.initialSentence}
+                  startingSentence={this.state?.characterStartingSentence}
+                  characterProfileImage={this.state?.characterProfileImage}
+                />
+              </div>
             </BotWrapper>
             <EmptyContainer />
           </>
@@ -198,7 +207,10 @@ const ChatPageWrapper = styled.div`
   justify-content: center;
   align-items: flex-start;
   flex: 1;
-  height: 100%;
+  max-height: 94vh;
+  overflow: hidden;
+  /* overflow-y: auto;
+  max-height: 94vh; */
 
   /* @media only screen and (max-width: 576px) {
     height: 94vh;

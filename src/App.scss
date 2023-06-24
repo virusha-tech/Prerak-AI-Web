@@ -1,5 +1,7 @@
 .rsc-content {
   flex: 1;
+  height: initial;
+  // max-height: calc(100% - 90px) !important;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -8,7 +10,12 @@
   border-radius: 0px !important;
   display: flex;
   flex-direction: column;
-  height: inherit !important;
+  // height: inherit !importan  t;
+  height: 100% !important;
+}
+
+.rsc-footer {
+  height: 58px !important;
 }
 
 .rsc-input {
