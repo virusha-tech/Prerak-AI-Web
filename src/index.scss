@@ -1,8 +1,15 @@
+// html,
+// body {
+//   max-height: 100%;
+//   height: 100vh;
+// }
+
 html,
 body {
-  max-height: 100%;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   height: --webkit-fill-available;
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
+  overflow-x: hidden;
 }
