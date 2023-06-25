@@ -30,6 +30,8 @@ class ChatPage extends Component {
   }
 
   async componentDidMount() {
+    // this changes the scrolling behavior to "smooth"
+    window.scrollTo({ top: 0, behavior: "smooth" });
     const { data } = await this.props.store.api.get(
       `/services/${this.props.match.params.id}`
     );
