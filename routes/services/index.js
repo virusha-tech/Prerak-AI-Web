@@ -150,6 +150,7 @@ app.get("/:id", async (req, res) => {
 
     // Save the updated object
     await service.save();
+    await redisClient.del("charaterCategoryMap");
 
     res.json({ ...service._doc });
   } catch (err) {
