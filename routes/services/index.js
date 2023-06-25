@@ -146,6 +146,11 @@ app.get("/:id", async (req, res) => {
   try {
     const serviceId = req.params.id;
     const service = await Character.findById(serviceId).exec();
+    service.characterViewsCount += 1;
+
+    // Save the updated object
+    await service.save();
+
     res.json({ ...service._doc });
   } catch (err) {
     console.log(err);
