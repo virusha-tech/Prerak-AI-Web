@@ -85,6 +85,7 @@ const HeaderContiner = styled.div`
 `;
 const HeaderLeft = styled.div`
   flex: 0.3;
+  display: flex;
   @media only screen and (max-width: 600px) {
     width: 88px;
     a {
