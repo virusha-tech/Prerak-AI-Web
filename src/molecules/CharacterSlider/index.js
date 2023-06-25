@@ -173,7 +173,7 @@ function ChipSlider({ characters, selectedChipIndex }) {
                   {"@ " + character.characterOwnerName}
                 </CharacterOwner>
                 <CharacterViewCount>
-                  {/* {intToString(character.characterViewsCount)} */}
+                  {intToString(character.characterViewsCount)}
                 </CharacterViewCount>
               </CharacterSecondaryInformation>
             </StyledPill>
