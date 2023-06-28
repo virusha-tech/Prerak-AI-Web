@@ -4,6 +4,22 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import slug from "slug";
 
+function getRandomElements(array, count) {
+  if (count > array.length) {
+    // throw new Error("Count cannot be greater than the array length.");
+  }
+
+  var randomElements = [];
+  var copiedArray = array.slice(); // Create a copy of the original array
+
+  while (randomElements.length < count) {
+    var randomIndex = Math.floor(Math.random() * copiedArray.length);
+    randomElements.push(copiedArray.splice(randomIndex, 1)[0]);
+  }
+
+  return randomElements;
+}
+
 class SampleQuestions extends React.Component {
   render() {
     return (
@@ -19,10 +35,12 @@ class SampleQuestions extends React.Component {
                 </div>
               </CharacterInfo>
               <CharacterQuestions>
-                {JSON.parse(character.sampleQuestions)
-                  .splice(0, 3)
-                  .map(({ label }) => {
-                    return (
+                {getRandomElements(
+                  JSON.parse(character.sampleQuestions),
+                  3
+                ).map(({ label }) => {
+                  return (
+                    <div>
                       <Link
                         to={`/chat/${slug(character.characterName)}/${
                           character._id
@@ -30,8 +48,9 @@ class SampleQuestions extends React.Component {
                       >
                         {label}
                       </Link>
-                    );
-                  })}
+                    </div>
+                  );
+                })}
               </CharacterQuestions>
             </SampleQuestionsCard>
           );
@@ -89,6 +108,7 @@ const CharacterInfo = styled.div`
     height: 56px;
     border-radius: 118px;
     border: 1px solid grey;
+    object-fit: cover;
   }
 `;
 
@@ -96,7 +116,7 @@ const CharacterQuestions = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  > a {
+  > div {
     border-radius: 8px;
     border: 1px solid #384455;
     background: #2b3441;
@@ -106,6 +126,19 @@ const CharacterQuestions = styled.div`
     font-family: Poppins;
     font-weight: 500;
     line-height: 16px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    a {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 2; /* Number of lines to display */
+      line-clamp: 2; /* Number of lines to display */
+    }
   }
 `;
 
