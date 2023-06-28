@@ -128,7 +128,7 @@ const CharacterQuestions = styled.div`
     line-height: 16px;
     height: 45px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 
     a {
