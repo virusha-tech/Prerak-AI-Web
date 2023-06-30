@@ -117,7 +117,7 @@ class Suggestions extends React.Component {
     return (
       <>
         {this.state.loading ? (
-          <Loading />
+          <div class="typing-loader"></div>
         ) : (
           <div
             style={{
@@ -128,7 +128,7 @@ class Suggestions extends React.Component {
             }}
           >
             <h1 style={{ color: "white", "text-transform": "uppercase" }}>
-              Click on below suggestions
+              Click on any of the suggestions below.
             </h1>
             <SampleQuestions>
               {this.state.answer.map(question => {
