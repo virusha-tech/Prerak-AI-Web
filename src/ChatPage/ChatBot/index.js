@@ -119,18 +119,30 @@ class Suggestions extends React.Component {
         {this.state.loading ? (
           <Loading />
         ) : (
-          <SampleQuestions>
-            {this.state.answer.map(question => {
-              return (
-                <div
-                  key={question}
-                  onClick={() => this.handleNextStep(question)}
-                >
-                  {question}
-                </div>
-              );
-            })}
-          </SampleQuestions>
+          <div
+            style={{
+              display: "flex",
+              "flex-direction": "column",
+              gap: "10px",
+              "align-items": "center"
+            }}
+          >
+            <h1 style={{ color: "white", "text-transform": "uppercase" }}>
+              Click on below suggestions
+            </h1>
+            <SampleQuestions>
+              {this.state.answer.map(question => {
+                return (
+                  <div
+                    key={question}
+                    onClick={() => this.handleNextStep(question)}
+                  >
+                    {question}
+                  </div>
+                );
+              })}
+            </SampleQuestions>
+          </div>
         )}
       </>
     );
