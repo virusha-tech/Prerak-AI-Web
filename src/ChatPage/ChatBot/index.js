@@ -29,14 +29,13 @@ class Answer extends React.Component {
   }
 
   async componentDidMount() {
-    // console.log(this.props.steps.question.value)
     let response = await this.props.store.api.post("/ai/subsequentQuestion", {
       conversation: [
         ...toJS(this.props.store.chatLogs),
         {
           role: "user",
           content:
-            this.props.steps?.question?.value ||
+            this.props.previousStep.value ||
             this.props.steps?.sampleQuestion?.metadata?.initialQuestion
         }
       ]
@@ -45,7 +44,7 @@ class Answer extends React.Component {
       {
         role: "user",
         content:
-          this.props.steps?.question?.value ||
+          this.props.previousStep.value ||
           this.props.steps?.sampleQuestion?.metadata?.initialQuestion
       },
       {
@@ -77,11 +76,101 @@ class Answer extends React.Component {
 const StyledContainer = styled.div``;
 
 @inject("store")
-@observer
-class Bot extends React.Component {
+class Suggestions extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      loading: true,
+      answer: "",
+      trigger: false
+    };
+    this.handleNextStep = this.handleNextStep.bind(this);
   }
+
+  async componentDidMount() {
+    let response = await this.props.store.api.post("/ai/subsequentQuestion", {
+      conversation: [
+        ...toJS(this.props.store.chatLogs),
+        {
+          role: "user",
+          content:
+            'Based on the above context, provide me only 3 single line questions as a first person in the form of JSON stringify array with no indendation attached. Sample response format: ["What is your approach to maintaining a strict fitness routine?", "How do you blend cardio and weight training exercises in your workout?", "What made the 2011 World Cup final a memorable experience for you?"]'
+        }
+      ]
+    });
+
+    this.setState({
+      loading: false,
+      answer: JSON.parse(response.data.answer),
+      trigger: true
+    });
+  }
+
+  handleNextStep(question) {
+    this.props.triggerNextStep({
+      value: question,
+      trigger: "suggest"
+    });
+  }
+
+  render() {
+    return (
+      <>
+        {this.state.loading ? (
+          <Loading />
+        ) : (
+          <SampleQuestions>
+            {this.state.answer.map(question => {
+              return (
+                <div
+                  key={question}
+                  onClick={() => this.handleNextStep(question)}
+                >
+                  {question}
+                </div>
+              );
+            })}
+          </SampleQuestions>
+        )}
+      </>
+    );
+  }
+}
+
+const SampleQuestions = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: 20px;
+
+  > div {
+    flex-basis: 33.33%;
+    word-wrap: break-word;
+    margin-bottom: 6px;
+    line-height: 20px;
+    position: relative;
+    padding: 10px 20px;
+    border-radius: 25px;
+    background: white;
+    background: #333337;
+    border-radius: 18px 18px 18px 0;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
+    color: #ffffff;
+    display: inline-block;
+    font-size: 14px;
+    max-width: 50%;
+    margin: 0 0 10px 0;
+    overflow: hidden;
+    position: relative;
+    padding: 12px;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+`;
+
+@inject("store")
+@observer
+class Bot extends React.Component {
   componentDidMount() {
     this.getBotSteps = this.getBotSteps.bind(this);
     this.props.store.initializeChatLogs([
@@ -97,7 +186,7 @@ class Bot extends React.Component {
       return [
         {
           id: "sampleQuestion",
-          component: <div>{this.props.initialQuestion}</div>,
+          component: <InitalQuestion suggestion={this.props.initialQuestion} />,
           metadata: {
             initialQuestion: this.props.initialQuestion
           },
@@ -120,14 +209,34 @@ class Bot extends React.Component {
           },
           user: true,
           asMessage: true,
-          trigger: "answer"
+          metadata: {
+            triggerNext: "answer"
+          },
+          trigger: "help"
+        },
+        {
+          id: "help",
+          replace: true,
+          component: <Help />,
+          waitAction: true
+        },
+        {
+          id: "suggestions",
+          component: <Suggestions />,
+          waitAction: true,
+          replace: true
+        },
+        {
+          id: "suggest",
+          component: <SelectedSuggestion />,
+          waitAction: true
         }
       ];
     }
     return [
       {
         id: "1",
-        message: this.props.startingSentence,
+        message: `${this.props.startingSentence} Type "help" if you need some suggestion questions to ask.`,
         trigger: "question"
       },
       {
@@ -139,7 +248,27 @@ class Bot extends React.Component {
           }
           return true;
         },
-        trigger: "answer"
+        metadata: {
+          triggerNext: "answer"
+        },
+        trigger: "help"
+      },
+      {
+        id: "help",
+        replace: true,
+        component: <Help />,
+        waitAction: true
+      },
+      {
+        id: "suggestions",
+        component: <Suggestions />,
+        waitAction: true,
+        replace: true
+      },
+      {
+        id: "suggest",
+        component: <SelectedSuggestion />,
+        waitAction: true
       },
       {
         id: "answer",
@@ -176,8 +305,7 @@ class Bot extends React.Component {
           }
           width="100%"
           userAvatar={User}
-          headerTitle={"Plannr AI Bot"}
-          placeholder="Type Message..."
+          placeholder="Type Message or Help"
           hideHeader={true}
           contentStyle={contentStyle}
           steps={this.getBotSteps()}
@@ -186,6 +314,43 @@ class Bot extends React.Component {
     );
   }
 }
+
+class InitalQuestion extends React.Component {
+  render() {
+    return <h1 style={{ color: "white" }}>{this.props.suggestion}</h1>;
+  }
+}
+
+class SelectedSuggestion extends React.Component {
+  constructor(props) {
+    super(props);
+    this.message = this.props.steps.suggestions.value;
+  }
+  componentDidMount() {
+    this.props.triggerNextStep({ value: this.message, trigger: "answer" });
+  }
+  render() {
+    return <h1 style={{ color: "white" }}>{this.message}</h1>;
+  }
+}
+class Help extends React.Component {
+  componentWillMount() {
+    const { previousStep } = this.props;
+    const { metadata = {} } = previousStep;
+    const trigger =
+      previousStep.value.toLowerCase() === "help"
+        ? "suggestions"
+        : metadata.triggerNext;
+
+    this.props.triggerNextStep({ trigger });
+  }
+
+  render() {
+    return <HelpWrapper />;
+  }
+}
+
+const HelpWrapper = styled.div``;
 
 export default Bot;
 const ContextChatBotWrapper = styled.div`
