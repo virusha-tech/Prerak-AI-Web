@@ -119,17 +119,8 @@ class Suggestions extends React.Component {
         {this.state.loading ? (
           <div class="typing-loader"></div>
         ) : (
-          <div
-            style={{
-              display: "flex",
-              "flex-direction": "column",
-              gap: "10px",
-              "align-items": "center"
-            }}
-          >
-            <h1 style={{ color: "white", "text-transform": "uppercase" }}>
-              Click on any of the suggestions below.
-            </h1>
+          <SuggestionWrapper>
+            <Header>Click on any of the suggestions below.</Header>
             <SampleQuestions>
               {this.state.answer.map(question => {
                 return (
@@ -142,18 +133,38 @@ class Suggestions extends React.Component {
                 );
               })}
             </SampleQuestions>
-          </div>
+          </SuggestionWrapper>
         )}
       </>
     );
   }
 }
 
+const SuggestionWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+`;
+const Header = styled.div`
+  color: white;
+  text-transform: uppercase;
+  @media only screen and (max-width: 620px) {
+    font-size: 12px;
+  }
+`;
+
 const SampleQuestions = styled.div`
   display: flex;
   justify-content: flex-start;
   flex-direction: row;
   gap: 20px;
+
+  @media only screen and (max-width: 620px) {
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+  }
 
   > div {
     flex-basis: 33.33%;
@@ -177,6 +188,10 @@ const SampleQuestions = styled.div`
     padding: 12px;
     cursor: pointer;
     text-decoration: underline;
+    @media only screen and (max-width: 620px) {
+      max-width: 100%;
+      flex-basis: 100%;
+    }
   }
 `;
 
