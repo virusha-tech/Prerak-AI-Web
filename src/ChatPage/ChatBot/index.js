@@ -101,16 +101,23 @@ class Suggestions extends React.Component {
 
     this.setState({
       loading: false,
-      answer: JSON.parse(response.data.answer),
+      answer: [...JSON.parse(response.data.answer), "Ask your own question"],
       trigger: true
     });
   }
 
   handleNextStep(question) {
-    this.props.triggerNextStep({
-      value: question,
-      trigger: "suggest"
-    });
+    if (question === "Ask your own question") {
+      this.props.triggerNextStep({
+        value: question,
+        trigger: "question"
+      });
+    } else {
+      this.props.triggerNextStep({
+        value: question,
+        trigger: "selectedSuggestion"
+      });
+    }
   }
 
   render() {
@@ -223,29 +230,8 @@ class Bot extends React.Component {
           id: "answer",
           component: <Answer />,
           waitAction: true,
-          trigger: "question",
+          trigger: "suggestions",
           asMessage: true
-        },
-        {
-          id: "question",
-          validator: value => {
-            if (!value.length) {
-              return "Please enter text first..";
-            }
-            return true;
-          },
-          user: true,
-          asMessage: true,
-          metadata: {
-            triggerNext: "answer"
-          },
-          trigger: "help"
-        },
-        {
-          id: "help",
-          replace: true,
-          component: <Help />,
-          waitAction: true
         },
         {
           id: "suggestions",
@@ -254,17 +240,73 @@ class Bot extends React.Component {
           replace: true
         },
         {
-          id: "suggest",
+          id: "selectedSuggestion",
           component: <SelectedSuggestion />,
           waitAction: true
+        },
+        {
+          id: "question",
+          user: true,
+          validator: value => {
+            if (!value.length) {
+              return "Please enter text first..";
+            }
+            return true;
+          },
+
+          trigger: "answer"
         }
+        //     {
+        //       id: "question",
+        //       validator: value => {
+        //         if (!value.length) {
+        //           return "Please enter text first..";
+        //         }
+        //         return true;
+        //       },
+        //       user: true,
+        //       asMessage: true,
+        //       metadata: {
+        //         triggerNext: "answer"
+        //       },
+        //       trigger: "help"
+        //     },
+        //     {
+        //       id: "help",
+        //       replace: true,
+        //       component: <Help />,
+        //       waitAction: true
+        //     },
+        //     {
+        //       id: "suggestions",
+        //       component: <Suggestions />,
+        //       waitAction: true,
+        //       replace: true
+        //     },
+        //     {
+        //       id: "suggest",
+        //       component: <SelectedSuggestion />,
+        //       waitAction: true
+        //     }
       ];
     }
     return [
       {
+        // Type "help" if you need some suggestion questions to ask.
         id: "1",
-        message: `${this.props.startingSentence} Type "help" if you need some suggestion questions to ask.`,
-        trigger: "question"
+        message: `${this.props.startingSentence}`,
+        trigger: "suggestions"
+      },
+      {
+        id: "suggestions",
+        component: <Suggestions />,
+        waitAction: true,
+        replace: true
+      },
+      {
+        id: "selectedSuggestion",
+        component: <SelectedSuggestion />,
+        waitAction: true
       },
       {
         id: "question",
@@ -275,33 +317,14 @@ class Bot extends React.Component {
           }
           return true;
         },
-        metadata: {
-          triggerNext: "answer"
-        },
-        trigger: "help"
-      },
-      {
-        id: "help",
-        replace: true,
-        component: <Help />,
-        waitAction: true
-      },
-      {
-        id: "suggestions",
-        component: <Suggestions />,
-        waitAction: true,
-        replace: true
-      },
-      {
-        id: "suggest",
-        component: <SelectedSuggestion />,
-        waitAction: true
+
+        trigger: "answer"
       },
       {
         id: "answer",
         component: <Answer />,
         waitAction: true,
-        trigger: "question",
+        trigger: "suggestions",
         asMessage: true
       }
     ];
@@ -354,7 +377,15 @@ class SelectedSuggestion extends React.Component {
     this.message = this.props.steps.suggestions.value;
   }
   componentDidMount() {
+    // if (this.message === "Ask your own question") {
+    //   this.props.triggerNextStep({
+    //     value: this.message,
+    //     trigger: "question",
+    //     replace: true
+    //   });
+    // } else {
     this.props.triggerNextStep({ value: this.message, trigger: "answer" });
+    // }
   }
   render() {
     return <h1 style={{ color: "white" }}>{this.message}</h1>;
