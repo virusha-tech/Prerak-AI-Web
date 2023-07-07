@@ -349,7 +349,7 @@ export const StyledPill = styled.button`
   text-align: center;
   color: #ffffff;
   cursor: pointer;
-  background-color: ${({ selected }) => (selected ? "#3A36DB" : "#2b3441")};
+  background-color: ${({ selected }) => (selected ? "#8C52FF" : "#2b3441")};
   display: flex;
   flex-direction: column;
   align-items: stretch;

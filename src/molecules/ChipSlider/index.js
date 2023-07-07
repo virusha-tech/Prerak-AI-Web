@@ -316,6 +316,6 @@ const StyledPill = styled.button`
   color: #ffffff;
   white-space: nowrap;
   cursor: pointer;
-  background-color: ${({ selected }) => (selected ? "#3A36DB" : "#2b3441")};
+  background-color: ${({ selected }) => (selected ? "#8C52FF" : "#2b3441")};
 `;
 export default ChipSlider;
