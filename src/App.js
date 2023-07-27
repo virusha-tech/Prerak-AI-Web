@@ -146,18 +146,21 @@ class App extends Component {
                   <div
                     style={{
                       display: "flex",
-                      "justify-content": "end",
+                      "justify-content": "space-between",
                       padding: "0px 0px",
-                      "padding-bottom": "10px",
+                      "padding-bottom": "20px",
                       "padding-top": "-10px",
                     }}
                   >
+                    <h1 style={{ fontSize: "20px",fontWeight:'bold' }}>Disclaimer</h1>
                     <span
                       style={{
                         cursor: "pointer",
                         border: "1px solid black",
                         "border-radius": "50%",
                         padding: "1px",
+                        width: "28px",
+                        height: "28px",
                       }}
                       onClick={this.handleModalClose}
                     >
